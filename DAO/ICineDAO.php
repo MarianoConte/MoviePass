@@ -7,5 +7,6 @@
     {
         function Add(Cine $cine);
         function GetAll();
+        function lastId();
     }
 ?>

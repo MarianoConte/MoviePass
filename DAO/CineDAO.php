@@ -11,7 +11,6 @@
         public function Add(Cine $cine)
         {
             $this->RetrieveData();
-            
             array_push($this->cineList, $cine);
 
             $this->SaveData();
@@ -24,6 +23,12 @@
             return $this->cineList;
         }
 
+        public function lastId(){
+            $this->RetrieveData();
+            $last = end($this->cineList);
+            return $last->getId();
+        }
+
         private function SaveData()
         {
             $arrayToEncode = array();
@@ -34,7 +39,7 @@
                 $valuesArray["nombre"] = $cine->getNombre();
                 $valuesArray["direccion"] = $cine->getDireccion();
                 $valuesArray["salas"] = $cine->getSalas();
-
+                $valuesArray["id"] = $cine->getId();
                 array_push($arrayToEncode, $valuesArray);
             }
 
@@ -55,12 +60,12 @@
 
                 foreach($arrayToDecode as $valuesArray)
                 {
-
                   $cine = new Cine();
                   $cine->setDireccion($valuesArray["direccion"]);
                   $cine->setValorEntrada($valuesArray["valorEntrada"]);
                   $cine->setNombre($valuesArray["nombre"]);
                   $cine->setSalas($valuesArray["salas"]);
+                  $cine->setId($valuesArray["id"]);
                   array_push($this->cineList, $cine);
                 }
             }

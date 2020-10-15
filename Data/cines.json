@@ -1,8 +1,23 @@
 [
     {
-        "valorEntrada": "300",
-        "nombre": "Ambassador",
-        "direccion": "cordoba y san martin",
-        "salas": "6"
+        "valorEntrada": "1233",
+        "nombre": "cine 2",
+        "direccion": "12",
+        "salas": "12",
+        "id": 0
+    },
+    {
+        "valorEntrada": "123",
+        "nombre": "cine 2",
+        "direccion": "12",
+        "salas": "123",
+        "id": 1
+    },
+    {
+        "valorEntrada": "123123",
+        "nombre": "asdasd",
+        "direccion": "asdasd",
+        "salas": "123123",
+        "id": 2
     }
 ]
