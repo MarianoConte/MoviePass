@@ -4,6 +4,10 @@
     private $fecha;
     private $vendidas;
     private $pelicula;
+    private $day;
+    private $hour;
+    private $tickets;
+    private $cine;
     private $id;
     public function getId(){
       return $this->id;
@@ -28,6 +32,86 @@
     }
     public function getVendidas(){
       return $this->vendidas;
+    }
+
+    /**
+     * Get the value of cine
+     */ 
+    public function getCine()
+    {
+        return $this->cine;
+    }
+
+    /**
+     * Set the value of cine
+     *
+     * @return  self
+     */ 
+    public function setCine($cine)
+    {
+        $this->cine = $cine;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of tickets
+     */ 
+    public function getTickets()
+    {
+        return $this->tickets;
+    }
+
+    /**
+     * Set the value of tickets
+     *
+     * @return  self
+     */ 
+    public function setTickets($tickets)
+    {
+        $this->tickets = $tickets;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of hour
+     */ 
+    public function getHour()
+    {
+        return $this->hour;
+    }
+
+    /**
+     * Set the value of hour
+     *
+     * @return  self
+     */ 
+    public function setHour($hour)
+    {
+        $this->hour = $hour;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of day
+     */ 
+    public function getDay()
+    {
+        return $this->day;
+    }
+
+    /**
+     * Set the value of day
+     *
+     * @return  self
+     */ 
+    public function setDay($day)
+    {
+        $this->day = $day;
+
+        return $this;
     }
   }
 ?>

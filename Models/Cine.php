@@ -1,6 +1,7 @@
 <?php namespace Models;
-  class Cine{
+  Class Cine{
     private $nombre;
+    private $id;
     private $direccion;
     private $valorEntrada;
     private $salas; // array salas
@@ -27,6 +28,26 @@
     }
     public function setDireccion($dir){
       $this->direccion = $dir;
+    }
+
+    /**
+     * Get the value of id
+     */ 
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of id
+     *
+     * @return  self
+     */ 
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
     }
   }
 ?>

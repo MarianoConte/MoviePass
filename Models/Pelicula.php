@@ -2,7 +2,7 @@
 
 namespace Models;
 
-class Pelicula
+Class Pelicula
 {
   private $nombre;
   private $genero;

@@ -4,7 +4,7 @@
     use DAO\ICineDAO as ICineDAO;
     use Models\Cine as Cine;
 
-    class CineDAO implements ICineDAO
+    Class CineDAO implements ICineDAO
     {
         private $cineList = array();
 

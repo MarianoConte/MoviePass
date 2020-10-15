@@ -1,5 +1,5 @@
 <?php namespace Models;
-  class Sala{
+  Class Sala{
     private $lugares;
     private $id;
     private $cine;
