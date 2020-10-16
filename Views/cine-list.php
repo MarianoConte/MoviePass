@@ -12,6 +12,7 @@
                          <th>Salas</th>
                          <th>Valor de entrada</th>
                          <th>Estado</th>
+                         <th></th>
                     </thead>
                     <tbody>
                          <?php
@@ -24,6 +25,10 @@
                                              <td><?php echo $cine->getSalas() ?></td>
                                              <td><?php echo "$ " . $cine->getValorEntrada() ?></td>
                                              <td><?php echo $cine->getState()?></td>
+                                             <form action="<?php echo FRONT_ROOT ?>Cine/ShowModView" method="post">
+                                                  <input type="hidden" name="id" value=<?php echo $cine->getId()?>>
+                                                  <td><button type="submit" class="btn btn-dark ml-auto d-block">Modificar</button></td>
+                                             </form>
                                         </tr>
                                    <?php
                               }

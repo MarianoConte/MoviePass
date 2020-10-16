@@ -7,6 +7,7 @@
     {
         function Add(Cine $cine);
         function Mod(Cine $cine);
+        function getById(int $id);
         function GetAll();
         function lastId();
     }

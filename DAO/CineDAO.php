@@ -17,9 +17,39 @@
         }
         
         public function Mod($cine){
+
             $this->RetrieveData();
-            // funcion de modificacion
+            foreach($this->cineList as $con){
+                if($con->getId()==$cine->getId()){
+                    $con->setState($cine->getState());
+                    $con->setValorEntrada($cine->getValorEntrada());
+                    $con->setId($cine->getId());
+                    $con->setNombre($cine->getNombre());
+                    $con->setSalas($cine->getSalas());
+                    $con->setDireccion($cine->getDireccion());
+                }else{
+                    $cine = null;
+                }
+            }
             $this->SaveData();
+        }
+
+        public function getById($id){
+            $this->RetrieveData();
+            foreach($this->cineList as $con){
+                if($con->getId()==$id){
+                    $cine = new Cine();
+                    $cine->setState($con->getState());
+                    $cine->setValorEntrada($con->getValorEntrada());
+                    $cine->setId($con->getId());
+                    $cine->setNombre($con->getNombre());
+                    $cine->setSalas($con->getSalas());
+                    $cine->setDireccion($con->getDireccion());
+                }else{
+                    $cine = null;
+                }
+            }
+            return $cine;
         }
 
         public function GetAll()

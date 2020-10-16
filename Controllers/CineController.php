@@ -19,8 +19,9 @@ class CineController
         require_once(VIEWS_PATH . "cine-add.php");
     }
 
-    public function showModView($cine)
+    public function ShowModView($id)
     {
+        $cine = $this->cineDAO->getById($id);
         require_once(VIEWS_PATH . "cine-mod.php");
     }
 
@@ -48,7 +49,7 @@ class CineController
         $this->ShowAddView();
     }
 
-    public function Modify($nombre, $direccion, $salas, $valorEntrada, $state, $id)
+    public function Mod($nombre, $direccion, $salas, $valorEntrada, $id, $state)
     {
         $cine = new Cine();
         $cine->setValorEntrada($valorEntrada);
@@ -57,8 +58,8 @@ class CineController
         $cine->setSalas($salas);
         $cine->setId($id);
         $cine->setState($state);
-
-        $this->cineDAO->Add($cine);
+        // todo bien hasta aca
+        $this->cineDAO->Mod($cine);
 
         $this->ShowListView();
     }
