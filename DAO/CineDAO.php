@@ -15,6 +15,12 @@
 
             $this->SaveData();
         }
+        
+        public function Mod($cine){
+            $this->RetrieveData();
+            // funcion de modificacion
+            $this->SaveData();
+        }
 
         public function GetAll()
         {
@@ -26,7 +32,8 @@
         public function lastId(){
             $this->RetrieveData();
             $last = end($this->cineList);
-            return $last->getId();
+            $id = ($last == true)?$last->getId():0;
+            return $id;
         }
 
         private function SaveData()
@@ -40,6 +47,7 @@
                 $valuesArray["direccion"] = $cine->getDireccion();
                 $valuesArray["salas"] = $cine->getSalas();
                 $valuesArray["id"] = $cine->getId();
+                $valuesArray["state"] = $cine->getState();
                 array_push($arrayToEncode, $valuesArray);
             }
 
@@ -66,6 +74,7 @@
                   $cine->setNombre($valuesArray["nombre"]);
                   $cine->setSalas($valuesArray["salas"]);
                   $cine->setId($valuesArray["id"]);
+                  $cine->setState($valuesArray["state"]);
                   array_push($this->cineList, $cine);
                 }
             }

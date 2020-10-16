@@ -6,6 +6,7 @@
     interface ICineDAO
     {
         function Add(Cine $cine);
+        function Mod(Cine $cine);
         function GetAll();
         function lastId();
     }

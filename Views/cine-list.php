@@ -11,6 +11,7 @@
                          <th>Direccion</th>
                          <th>Salas</th>
                          <th>Valor de entrada</th>
+                         <th>Estado</th>
                     </thead>
                     <tbody>
                          <?php
@@ -22,6 +23,7 @@
                                              <td><?php echo $cine->getDireccion() ?></td>
                                              <td><?php echo $cine->getSalas() ?></td>
                                              <td><?php echo "$ " . $cine->getValorEntrada() ?></td>
+                                             <td><?php echo $cine->getState()?></td>
                                         </tr>
                                    <?php
                               }

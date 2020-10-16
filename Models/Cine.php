@@ -5,6 +5,7 @@
     private $direccion;
     private $valorEntrada;
     private $salas; // array salas
+    private $state;
     public function getSalas(){
       return $this->salas;
     }
@@ -46,6 +47,26 @@
     public function setId($id)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of state
+     */ 
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set the value of state
+     *
+     * @return  self
+     */ 
+    public function setState($state)
+    {
+        $this->state = $state;
 
         return $this;
     }
