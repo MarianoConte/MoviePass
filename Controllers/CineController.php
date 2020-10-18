@@ -49,7 +49,7 @@ class CineController
         $this->ShowAddView();
     }
 
-    public function Mod($nombre, $direccion, $salas, $valorEntrada, $id, $state)
+    public function Mod($nombre, $direccion, $salas, $valorEntrada, $id)
     {
         $cine = new Cine();
         $cine->setValorEntrada($valorEntrada);
@@ -57,10 +57,12 @@ class CineController
         $cine->setDireccion($direccion);
         $cine->setSalas($salas);
         $cine->setId($id);
-        $cine->setState($state);
-        // todo bien hasta aca
         $this->cineDAO->Mod($cine);
 
         $this->ShowListView();
+    }
+
+    public function Delete(){
+
     }
 }

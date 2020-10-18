@@ -8,7 +8,7 @@
     {
         private $cineList = array();
 
-        public function Add(Cine $cine)
+        public function Add($cine)
         {
             $this->RetrieveData();
             array_push($this->cineList, $cine);
@@ -21,16 +21,25 @@
             $this->RetrieveData();
             foreach($this->cineList as $con){
                 if($con->getId()==$cine->getId()){
-                    $con->setState($cine->getState());
                     $con->setValorEntrada($cine->getValorEntrada());
                     $con->setId($cine->getId());
                     $con->setNombre($cine->getNombre());
                     $con->setSalas($cine->getSalas());
                     $con->setDireccion($cine->getDireccion());
-                }else{
-                    $cine = null;
                 }
             }
+            $this->SaveData();
+        }
+
+        public function Delete($cine){
+            $this->RetrieveData();
+
+            foreach($this->cineList as $con){
+                if($con->getId()==$cine->getId()){
+                    $con->setState(false);
+                }
+            }
+
             $this->SaveData();
         }
 
@@ -83,7 +92,11 @@
 
             $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
             
+            if ( !is_dir('Data') ) {
+                mkdir('Data');       
+            }
             file_put_contents('Data/cines.json', $jsonContent);
+        
         }
 
         private function RetrieveData()

@@ -34,12 +34,6 @@
 
                          <input type="hidden" name="id" value=<?php echo $cine->getId()?>>
 
-                         <div class="col-lg-4">
-                              <div class="form-group">
-                                   <label for="">Estado</label>
-                                   <input type="checkbox" name="state" <?php echo ($cine->getState())?("checked"):"";?>>
-                              </div>
-                         </div>
                     </div>
                     <button type="submit" name="button" class="btn btn-dark ml-auto d-block">Modificar</button>
                </form>
