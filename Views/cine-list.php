@@ -13,22 +13,32 @@
                          <th>Valor de entrada</th>
                          <th>Estado</th>
                          <th></th>
+                         <th></th>
                     </thead>
                     <tbody>
                          <?php
                               foreach($cineList as $cine)
                               {
+                                   $status = ($cine->getState()==true)?"Activo":"Inactivo";
                                    ?>
                                         <tr>
                                              <td><?php echo $cine->getNombre() ?></td>
                                              <td><?php echo $cine->getDireccion() ?></td>
                                              <td><?php echo $cine->getSalas() ?></td>
                                              <td><?php echo "$ " . $cine->getValorEntrada() ?></td>
-                                             <td><?php echo $cine->getState()?></td>
+                                             <td><?php echo $status?></td>
                                              <form action="<?php echo FRONT_ROOT ?>Cine/ShowModView" method="post">
                                                   <input type="hidden" name="id" value=<?php echo $cine->getId()?>>
                                                   <td><button type="submit" class="btn btn-dark ml-auto d-block">Modificar</button></td>
                                              </form>
+                                             <?php
+                                                  if($status=="Activo"){
+                                             ?>
+                                                  <form action="<?php echo FRONT_ROOT ?>Cine/Delete" method="post">
+                                                       <input type="hidden" name="id" value=<?php echo $cine->getId()?>>
+                                                       <td><button type="submit" class="btn btn-danger ml-auto d-block">Desactivar</button></td>
+                                                  </form>
+                                                  <?php }?>
                                         </tr>
                                    <?php
                               }

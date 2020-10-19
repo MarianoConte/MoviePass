@@ -31,11 +31,11 @@
             $this->SaveData();
         }
 
-        public function Delete($cine){
+        public function Delete($id){
             $this->RetrieveData();
 
             foreach($this->cineList as $con){
-                if($con->getId()==$cine->getId()){
+                if($con->getId()==$id){
                     $con->setState(false);
                 }
             }
