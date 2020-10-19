@@ -7,7 +7,8 @@
     {
         function Add(Cine $cine);
         function Mod(Cine $cine);
-        function Delete(Cine $cine);
+        function Delete(int $id);
+        function Activate(int $id);
         function getById(int $id);
         function GetAll();
         function lastId();

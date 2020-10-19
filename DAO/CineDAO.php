@@ -43,6 +43,18 @@
             $this->SaveData();
         }
 
+        public function Activate($id){
+            $this->RetrieveData();
+
+            foreach($this->cineList as $con){
+                if($con->getId()==$id){
+                    $con->setState(true);
+                }
+            }
+
+            $this->SaveData();
+        }
+
         public function getById($id){
             $this->RetrieveData();
             foreach($this->cineList as $con){

@@ -66,4 +66,9 @@ class CineController
         $this->cineDAO->Delete($id);
         $this->ShowListView();
     }
+
+    public function Activate($id){
+        $this->cineDAO->Activate($id);
+        $this->ShowListView();
+    }
 }
