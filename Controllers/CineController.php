@@ -3,7 +3,6 @@
 namespace Controllers;
 
 use DAO\CineDAO as CineDAO;
-use Exception;
 use Models\Cine as Cine;
 
 class CineController
