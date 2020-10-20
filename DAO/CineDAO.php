@@ -4,16 +4,20 @@
     use DAO\ICineDAO as ICineDAO;
     use Models\Cine as Cine;
 
-    Class CineDAO implements ICineDAO
+Class CineDAO implements ICineDAO
     {
         private $cineList = array();
 
         public function Add($cine)
         {
             $this->RetrieveData();
-            array_push($this->cineList, $cine);
+            if($this->validateCine($this->cineList, $cine)){
+                array_push($this->cineList, $cine);
 
-            $this->SaveData();
+                $this->SaveData();
+            }else{
+                //retornar error
+            }
         }
         
         public function Mod($cine){
@@ -85,6 +89,17 @@
             $last = end($this->cineList);
             $id = ($last == true)?$last->getId():0;
             return $id;
+        }
+
+        //valido si el nombre del cine no esta en uso
+        public function validateCine($cineList, $cine){
+            $res = true;
+            foreach($cineList as $con){
+                if($con->getNombre() == $cine->getNombre()){
+                    $res = false;
+                }
+            }
+            return $res;
         }
 
         private function SaveData()

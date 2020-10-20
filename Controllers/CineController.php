@@ -3,6 +3,7 @@
 namespace Controllers;
 
 use DAO\CineDAO as CineDAO;
+use Exception;
 use Models\Cine as Cine;
 
 class CineController
@@ -43,9 +44,9 @@ class CineController
         $cine->setSalas($salas);
         $cine->setId($id);
         $cine->setState(true);
-
-        $this->cineDAO->Add($cine);
-
+        
+        $this->cineDAO->Add($cine); // retorna error si ya existe ese nombre
+        
         $this->ShowAddView();
     }
 
