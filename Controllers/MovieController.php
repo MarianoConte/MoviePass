@@ -17,6 +17,10 @@
       require_once(VIEWS_PATH."movie.php");
     }
 
+    public function ShowMovieSearch(){
+      require_once(VIEWS_PATH."search-movie.php");
+    }
+
     public function Search($name){
       $results = $this->movieDAO->getMovie($name);
       $this->ShowMovieView($results->results);
