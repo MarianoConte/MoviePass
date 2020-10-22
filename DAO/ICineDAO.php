@@ -10,6 +10,7 @@
         function Delete(int $id);
         function Activate(int $id);
         function getById(int $id);
+        function getByName(string $name);
         function GetAll();
         function lastId();
     }

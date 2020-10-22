@@ -1,12 +1,24 @@
 <?php
-    require_once('nav.php');
+require_once('nav.php');
 ?>
 <main class="py-5">
      <section id="listado" class="mb-5">
           <div class="container">
                <h2 class="mb-4">Agregar cine</h2>
+               <?php
+               if ($nameError) {
+                    echo '
+                                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                                  Nombre inválido.
+                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                       <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                             </div>
+                                        ';
+               }
+               ?>
                <form action="<?php echo FRONT_ROOT ?>Cine/Add" method="post" class="bg-light-alpha p-5">
-                    <div class="row">                         
+                    <div class="row">
                          <div class="col-lg-4">
                               <div class="form-group">
                                    <label for="">Nombre</label>
