@@ -8,13 +8,13 @@ require_once('nav.php');
                <?php
                if ($nameError) {
                     echo '
-                                             <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                  Nombre inválido.
-                                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                       <span aria-hidden="true">&times;</span>
-                                                  </button>
-                                             </div>
-                                        ';
+                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                              Cine inválido.
+                              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span>
+                              </button>
+                         </div>
+                    ';
                }
                ?>
                <form action="<?php echo FRONT_ROOT ?>Cine/Add" method="post" class="bg-light-alpha p-5">

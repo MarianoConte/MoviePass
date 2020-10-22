@@ -34,7 +34,7 @@ class CineController
 
     public function Add($nombre, $direccion, $salas, $valorEntrada)
     {
-        if ($this->validateName($nombre) == true) {
+        if ($this->validateName($nombre) == true && $direccion) {
             $id = $this->cineDAO->lastId() + 1;
 
             $cine = new Cine();
@@ -49,13 +49,13 @@ class CineController
             $this->ShowAddView();
         } else {
             //error de nombre view
-            $this->ShowAddView("nameError");
+            $this->ShowAddView("Error");
         }
     }
 
     public function Mod($nombre, $direccion, $salas, $valorEntrada, $id)
     {
-        if ($this->validateName($nombre, $id) == true) {
+        if ($this->validateName($nombre, $id) == true && $direccion) {
             $cine = new Cine();
             $cine->setValorEntrada($valorEntrada);
             $cine->setNombre($nombre);
@@ -67,7 +67,7 @@ class CineController
             $this->ShowListView();
         } else {
             //error de nombre view
-            $this->ShowModView($id, "nameError");
+            $this->ShowModView($id, "Error");
         }
     }
 
