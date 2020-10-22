@@ -63,11 +63,10 @@ class CineDAO implements ICineDAO
     public function getById($id)
     {
         $this->RetrieveData();
-        foreach ($this->cineList as $con) {
-            if ($con->getId() == $id) {
+        $cine = null;
+        foreach ($this->cineList as $con) {  
+            if ($con->getId() == (int)$id) {
                 $cine = $this->cineCopy($con);
-            } else {
-                $cine = null;
             }
         }
         return $cine;

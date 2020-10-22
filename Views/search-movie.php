@@ -9,7 +9,7 @@ require_once('nav.php');
         <h2 class="text-white mb-4">Buscar Pelicula</h2>
 
         <?php
-        if ($error) {
+        if (isset($error)) {
           echo '
                <div class="alert alert-danger alert-dismissible fade show" role="alert">
                   No hay resultados para esa búsqueda.
