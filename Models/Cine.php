@@ -4,7 +4,7 @@
     private $id;
     private $direccion;
     private $valorEntrada;
-    private $salas; // array salas
+    private $salas; 
     private $state;
     public function getSalas(){
       return $this->salas;

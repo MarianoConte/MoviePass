@@ -5,7 +5,7 @@
     {
         public function Index($message = "")
         {
-            require_once(VIEWS_PATH."search-movie.php");
+            require_once(VIEWS_PATH."cine-add.php");
         }        
     }
 ?>

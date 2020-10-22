@@ -9,12 +9,13 @@ require_once('nav.php');
                if ($nameError) {
                     echo '
                                              <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                                  Nombre inválido.
+                                                  Cine inválido.
                                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                                        <span aria-hidden="true">&times;</span>
                                                   </button>
                                              </div>
                                         ';
+                                        $nameError = null;
                }
                ?>
                <form action="<?php echo FRONT_ROOT ?>Cine/Mod" method="post" class="bg-light-alpha p-5">

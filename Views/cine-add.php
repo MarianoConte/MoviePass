@@ -15,7 +15,9 @@ require_once('nav.php');
                               </button>
                          </div>
                     ';
+                    $nameError = null;
                }
+
                ?>
                <form action="<?php echo FRONT_ROOT ?>Cine/Add" method="post" class="bg-light-alpha p-5">
                     <div class="row">
