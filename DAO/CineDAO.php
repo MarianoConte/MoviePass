@@ -7,149 +7,151 @@ use Models\Cine as Cine;
 
 class CineDAO implements ICineDAO
 {
-    private $cineList = array();
+  private $cineList = array();
 
-    public function Add($cine)
-    {
-        $this->RetrieveData();
+  public function Add($cine)
+  {
+    $this->RetrieveData();
 
-        array_push($this->cineList, $cine);
+    array_push($this->cineList, $cine);
 
-        $this->SaveData();
+    $this->SaveData();
+  }
+
+  public function Mod($cine)
+  {
+
+    $this->RetrieveData();
+    foreach ($this->cineList as $con) {
+      if ($con->getId() == $cine->getId()) {
+        $con->setValorEntrada($cine->getValorEntrada());
+        $con->setId($cine->getId());
+        $con->setNombre($cine->getNombre());
+        $con->setSalas($cine->getSalas());
+        $con->setDireccion($cine->getDireccion());
+      }
+    }
+    $this->SaveData();
+  }
+
+  public function Delete($id)
+  {
+    $this->RetrieveData();
+
+    foreach ($this->cineList as $con) {
+      if ($con->getId() == $id) {
+        $con->setState(false);
+      }
     }
 
-    public function Mod($cine)
-    {
+    $this->SaveData();
+  }
 
-        $this->RetrieveData();
-        foreach ($this->cineList as $con) {
-            if ($con->getId() == $cine->getId()) {
-                $con->setValorEntrada($cine->getValorEntrada());
-                $con->setId($cine->getId());
-                $con->setNombre($cine->getNombre());
-                $con->setSalas($cine->getSalas());
-                $con->setDireccion($cine->getDireccion());
-            }
-        }
-        $this->SaveData();
+  public function Activate($id)
+  {
+    $this->RetrieveData();
+
+    foreach ($this->cineList as $con) {
+      if ($con->getId() == $id) {
+        $con->setState(true);
+      }
     }
 
-    public function Delete($id)
-    {
-        $this->RetrieveData();
+    $this->SaveData();
+  }
 
-        foreach ($this->cineList as $con) {
-            if ($con->getId() == $id) {
-                $con->setState(false);
-            }
-        }
+  public function getById($id)
+  {
+    $this->RetrieveData();
+    $cine = null;
+    foreach ($this->cineList as $con) {
+      if ($con->getId() == (int)$id) {
+        $cine = $this->cineCopy($con);
+      }
+    }
+    return $cine;
+  }
 
-        $this->SaveData();
+  public function getByName($name)
+  {
+    $this->RetrieveData();
+    $cine = null;
+    foreach ($this->cineList as $con) {
+      if ($name == $con->getNombre()) {
+        $cine = $this->cineCopy($con);
+      }
+    }
+    return $cine;
+  }
+
+  public function GetAll()
+  {
+    $this->RetrieveData();
+
+    return $this->cineList;
+  }
+
+  public function lastId()
+  {
+    $this->RetrieveData();
+    $last = end($this->cineList);
+    $id = ($last == true) ? $last->getId() : 0;
+    return $id;
+  }
+
+  private function SaveData()
+  {
+    $arrayToEncode = array();
+
+    foreach ($this->cineList as $cine) {
+      $valuesArray["valorEntrada"] = $cine->getValorEntrada();
+      $valuesArray["nombre"] = $cine->getNombre();
+      $valuesArray["direccion"] = $cine->getDireccion();
+      $valuesArray["salas"] = $cine->getSalas();
+      $valuesArray["id"] = $cine->getId();
+      $valuesArray["state"] = $cine->getState();
+      array_push($arrayToEncode, $valuesArray);
     }
 
-    public function Activate($id)
-    {
-        $this->RetrieveData();
+    $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
 
-        foreach ($this->cineList as $con) {
-            if ($con->getId() == $id) {
-                $con->setState(true);
-            }
-        }
-
-        $this->SaveData();
+    if (!is_dir('Data')) {
+      mkdir('Data');
     }
+    file_put_contents('Data/cines.json', $jsonContent);
+  }
 
-    public function getById($id)
-    {
-        $this->RetrieveData();
-        $cine = null;
-        foreach ($this->cineList as $con) {  
-            if ($con->getId() == (int)$id) {
-                $cine = $this->cineCopy($con);
-            }
-        }
-        return $cine;
-    }
+  private function RetrieveData()
+  {
+    $this->cineList = array();
 
-    public function getByName($name){
-        $this->RetrieveData();
-        $cine = null;
-        foreach($this->cineList as $con){
-            if($name == $con->getNombre()){
-                $cine = $this->cineCopy($con);
-            }
-        }
-        return $cine;
-    }
+    if (file_exists('Data/cines.json')) {
+      $jsonContent = file_get_contents('Data/cines.json');
 
-    public function GetAll()
-    {
-        $this->RetrieveData();
+      $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
 
-        return $this->cineList;
-    }
-
-    public function lastId()
-    {
-        $this->RetrieveData();
-        $last = end($this->cineList);
-        $id = ($last == true) ? $last->getId() : 0;
-        return $id;
-    }
-
-    private function SaveData()
-    {
-        $arrayToEncode = array();
-
-        foreach ($this->cineList as $cine) {
-            $valuesArray["valorEntrada"] = $cine->getValorEntrada();
-            $valuesArray["nombre"] = $cine->getNombre();
-            $valuesArray["direccion"] = $cine->getDireccion();
-            $valuesArray["salas"] = $cine->getSalas();
-            $valuesArray["id"] = $cine->getId();
-            $valuesArray["state"] = $cine->getState();
-            array_push($arrayToEncode, $valuesArray);
-        }
-
-        $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-
-        if (!is_dir('Data')) {
-            mkdir('Data');
-        }
-        file_put_contents('Data/cines.json', $jsonContent);
-    }
-
-    private function RetrieveData()
-    {
-        $this->cineList = array();
-
-        if (file_exists('Data/cines.json')) {
-            $jsonContent = file_get_contents('Data/cines.json');
-
-            $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
-
-            foreach ($arrayToDecode as $valuesArray) {
-                $cine = new Cine();
-                $cine->setDireccion($valuesArray["direccion"]);
-                $cine->setValorEntrada($valuesArray["valorEntrada"]);
-                $cine->setNombre($valuesArray["nombre"]);
-                $cine->setSalas($valuesArray["salas"]);
-                $cine->setId($valuesArray["id"]);
-                $cine->setState($valuesArray["state"]);
-                array_push($this->cineList, $cine);
-            }
-        }
-    }
-
-    private function cineCopy($con){ // devuelve una copia instanciada
+      foreach ($arrayToDecode as $valuesArray) {
         $cine = new Cine();
-        $cine->setState($con->getState());
-        $cine->setValorEntrada($con->getValorEntrada());
-        $cine->setId($con->getId());
-        $cine->setNombre($con->getNombre());
-        $cine->setSalas($con->getSalas());
-        $cine->setDireccion($con->getDireccion());
-        return $cine;
+        $cine->setDireccion($valuesArray["direccion"]);
+        $cine->setValorEntrada($valuesArray["valorEntrada"]);
+        $cine->setNombre($valuesArray["nombre"]);
+        $cine->setSalas($valuesArray["salas"]);
+        $cine->setId($valuesArray["id"]);
+        $cine->setState($valuesArray["state"]);
+        array_push($this->cineList, $cine);
+      }
     }
+  }
+
+  private function cineCopy($con)
+  { // devuelve una copia instanciada
+    $cine = new Cine();
+    $cine->setState($con->getState());
+    $cine->setValorEntrada($con->getValorEntrada());
+    $cine->setId($con->getId());
+    $cine->setNombre($con->getNombre());
+    $cine->setSalas($con->getSalas());
+    $cine->setDireccion($con->getDireccion());
+    return $cine;
+  }
 }
