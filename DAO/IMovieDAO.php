@@ -5,6 +5,8 @@
 
     interface IMovieDAO
     {
-      function getMovie(String $nombre);
+      function getMovieByName(String $nombre);
+      function getMovieByGenre(String $genre);
+      function getAllGenres();
     }
 ?>
