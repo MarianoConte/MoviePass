@@ -23,7 +23,6 @@ class UserDAO implements IUserDAO
 
     $sql = "SELECT * FROM users WHERE id='{$value}' OR email='{$value}' LIMIT 1";
     $result = $this->db->getConnection()->query($sql);
-
     if ($result->num_rows > 0) {
       $dbUser = $result->fetch_assoc();
       $user = new User(

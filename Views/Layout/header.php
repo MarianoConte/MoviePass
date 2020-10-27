@@ -43,7 +43,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <!-- Menu administrador -->
-          <?php if($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') { ?>
+          <?php if(isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'ADMIN') { ?>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Theater/ShowListView">Administrar cines</a>
             </li>
@@ -51,12 +51,12 @@
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/User/Logout">Cerrar sesión</a>
             </li>
           <!-- Menu cliente -->
-          <?php } else if($_SESSION['user'] && $_SESSION['user']->getRole() == 'CUSTOMER') { ?>
+          <?php } else if(isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'CUSTOMER') { ?>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/User/Logout">Cerrar sesión</a>
             </li>
           <!-- Menu anonimo -->
-          <?php } else if(!$_SESSION['user']) { ?>
+          <?php } else if(!isset($_SESSION['user'])) { ?>
             <li class="nav-item">
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/User/ShowLoginView">Iniciar sesión</a>
             </li>
