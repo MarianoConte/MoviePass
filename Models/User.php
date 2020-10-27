@@ -1,110 +1,76 @@
-<?php namespace Models;
-  Class User{
-    private $name;
-    private $id;
-    private $mail;
-    private $pass;
-    private $rol;
-    
+<?php
 
-    /**
-     * Get the value of name
-     */ 
-    public function getName()
-    {
-        return $this->name;
-    }
+namespace Models;
 
-    /**
-     * Set the value of name
-     *
-     * @return  self
-     */ 
-    public function setName($name)
-    {
-        $this->name = $name;
+class User {
+  private $id;
+  private $email;
+  private $password;
+  private $first_name;
+  private $last_name;
+  private $role;
 
-        return $this;
-    }
-
-    /**
-     * Get the value of id
-     */ 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @return  self
-     */ 
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of mail
-     */ 
-    public function getMail()
-    {
-        return $this->mail;
-    }
-
-    /**
-     * Set the value of mail
-     *
-     * @return  self
-     */ 
-    public function setMail($mail)
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of pass
-     */ 
-    public function getPass()
-    {
-        return $this->pass;
-    }
-
-    /**
-     * Set the value of pass
-     *
-     * @return  self
-     */ 
-    public function setPass($pass)
-    {
-        $this->pass = $pass;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of rol
-     */ 
-    public function getRol()
-    {
-        return $this->rol;
-    }
-
-    /**
-     * Set the value of rol
-     *
-     * @return  self
-     */ 
-    public function setRol($rol)
-    {
-        $this->rol = $rol;
-
-        return $this;
-    }
+  public function __construct(
+    $id = null,
+    $email = null,
+    $password = null,
+    $first_name = null,
+    $last_name = null,
+    $role = null
+  ) {
+    $this->id = $id;
+    $this->email = $email;
+    $this->password = $password;
+    $this->first_name = $first_name;
+    $this->last_name = $last_name;
+    $this->role = $role;
   }
-?>
+
+  public function getId() {
+    return $this->id;
+  }
+
+  public function setId($id) {
+    $this->id = $id;
+  }
+
+  public function getEmail() {
+    return $this->email;
+  }
+
+  public function setEmail($email) {
+    $this->email = $email;
+  }
+
+  public function getPassword() {
+    return $this->password;
+  }
+
+  public function setPassword($password) {
+    $this->password = $password;
+  }
+
+  public function getFirstName() {
+    return $this->first_name;
+  }
+
+  public function setFirstName($first_name) {
+    $this->first_name = $first_name;
+  }
+
+  public function getLastName() {
+    return $this->last_name;
+  }
+
+  public function setLastName($last_name) {
+    $this->last_name = $last_name;
+  }
+
+  public function getRole() {
+    return $this->role;
+  }
+
+  public function setRole($role) {
+    $this->role = $role;
+  }
+}

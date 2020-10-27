@@ -1,11 +1,9 @@
 <?php
-    namespace Controllers;
+  namespace Controllers;
 
-    class HomeController
-    {
-        public function Index($message = "")
-        {
-            require_once(VIEWS_PATH."cine-add.php");
-        }        
-    }
+  class HomeController {
+    public function index($message = "") {
+        require_once(VIEWS_PATH."/index.php");
+    }        
+  }
 ?>
