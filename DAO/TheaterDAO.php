@@ -92,8 +92,8 @@ class TheaterDAO implements ITheaterDAO
 
   public function Edit(Theater $theater)
   {
-    $sql = 
-    "UPDATE 
+    $sql =
+      "UPDATE 
       theaters
     SET 
       name='{$theater->getName()}',
@@ -106,8 +106,8 @@ class TheaterDAO implements ITheaterDAO
 
   public function Deactivate($theater_id)
   {
-    $sql = 
-    "UPDATE 
+    $sql =
+      "UPDATE 
       theaters
     SET 
       state=0
@@ -119,8 +119,8 @@ class TheaterDAO implements ITheaterDAO
 
   public function Activate($theater_id)
   {
-    $sql = 
-    "UPDATE 
+    $sql =
+      "UPDATE 
       theaters
     SET 
       state=1
