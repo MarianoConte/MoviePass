@@ -14,8 +14,6 @@
         <thead>
           <th>Nombre</th>
           <th>Dirección</th>
-          <th>Butacas</th>
-          <th>Precio de entrada</th>
           <th>Estado</th>
           <th class="text-right">Acciones</th>
         </thead>
@@ -24,8 +22,6 @@
             <tr class="<?php if(!$theater->getState()) echo 'disabled-row'; ?>">
               <td><?php echo $theater->getName(); ?></td>
               <td><?php echo $theater->getAddress(); ?></td>
-              <td><?php echo $theater->getCapacity(); ?></td>
-              <td><?php echo "$".$theater->getTicketPrice(); ?></td>
               <td><?php echo $theater->getState() ? "Habilitado" : "Deshabilitado"; ?></td>
               <td class="text-right">
                 <form class="d-inline-block" action="<?php echo FRONT_ROOT.'/Theater/ShowEditView'; ?>" method="post">

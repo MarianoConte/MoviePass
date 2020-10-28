@@ -6,25 +6,22 @@ class Theater
 {
   private $id;
   private $name;
-  private $capacity;
   private $address;
-  private $ticket_price;
   private $state;
+  private $rooms;
 
   public function __construct(
     $id = null,
     $name = null,
-    $capacity = null,
     $address = null,
-    $ticket_price = null,
-    $state = null
+    $state = null,
+    $rooms = null
   ) {
     $this->id = $id;
     $this->name = $name;
-    $this->capacity = $capacity;
     $this->address = $address;
-    $this->ticket_price = $ticket_price;
     $this->state = $state;
+    $this->$rooms = $rooms;
   }
 
   public function getId()
@@ -47,16 +44,6 @@ class Theater
     $this->name = $name;
   }
 
-  public function getCapacity()
-  {
-    return $this->capacity;
-  }
-
-  public function setCapacity($capacity)
-  {
-    $this->capacity = $capacity;
-  }
-
   public function getAddress()
   {
     return $this->address;
@@ -67,16 +54,6 @@ class Theater
     $this->address = $address;
   }
 
-  public function getTicketPrice()
-  {
-    return $this->ticket_price;
-  }
-
-  public function setTicketPrice($ticket_price)
-  {
-    $this->ticket_price = $ticket_price;
-  }
-
   public function getState()
   {
     return $this->state;
@@ -85,5 +62,15 @@ class Theater
   public function setState($state)
   {
     $this->state = $state;
+  }
+
+  public function getRooms()
+  {
+    return $this->rooms;
+  }
+
+  public function setRooms($rooms)
+  {
+    $this->rooms = $rooms;
   }
 }
