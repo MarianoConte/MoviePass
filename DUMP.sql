@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Oct 27, 2020 at 03:50 AM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.2.34
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 29-10-2020 a las 22:50:35
+-- Versión del servidor: 10.4.11-MariaDB
+-- Versión de PHP: 7.4.5
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `moviepass`
+-- Base de datos: `moviepass`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `functions`
+-- Estructura de tabla para la tabla `functions`
 --
 
 CREATE TABLE `functions` (
@@ -37,7 +37,7 @@ CREATE TABLE `functions` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `genres`
+-- Estructura de tabla para la tabla `genres`
 --
 
 CREATE TABLE `genres` (
@@ -48,7 +48,7 @@ CREATE TABLE `genres` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `movies`
+-- Estructura de tabla para la tabla `movies`
 --
 
 CREATE TABLE `movies` (
@@ -61,22 +61,27 @@ CREATE TABLE `movies` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theaters`
+-- Estructura de tabla para la tabla `theaters`
 --
 
 CREATE TABLE `theaters` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `capacity` int(8) NOT NULL,
   `address` varchar(150) NOT NULL,
-  `ticket_price` decimal(10,2) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Volcado de datos para la tabla `theaters`
+--
+
+INSERT INTO `theaters` (`id`, `name`, `address`, `state`) VALUES
+(1, 'cine', 'dir', 1);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theater_rooms`
+-- Estructura de tabla para la tabla `theater_rooms`
 --
 
 CREATE TABLE `theater_rooms` (
@@ -84,13 +89,14 @@ CREATE TABLE `theater_rooms` (
   `theater_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `price` decimal(10,0) NOT NULL,
-  `seats` int(5) NOT NULL
+  `seats` int(5) NOT NULL,
+  `state` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -103,12 +109,14 @@ CREATE TABLE `users` (
   `created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+
+
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `functions`
+-- Indices de la tabla `functions`
 --
 ALTER TABLE `functions`
   ADD PRIMARY KEY (`id`),
@@ -116,98 +124,98 @@ ALTER TABLE `functions`
   ADD KEY `theater_room_id` (`theater_room_id`);
 
 --
--- Indexes for table `genres`
+-- Indices de la tabla `genres`
 --
 ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `movies`
+-- Indices de la tabla `movies`
 --
 ALTER TABLE `movies`
   ADD PRIMARY KEY (`id`),
   ADD KEY `genre_id` (`genre_id`);
 
 --
--- Indexes for table `theaters`
+-- Indices de la tabla `theaters`
 --
 ALTER TABLE `theaters`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `theater_rooms`
+-- Indices de la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   ADD PRIMARY KEY (`id`),
   ADD KEY `theater_id` (`theater_id`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `functions`
+-- AUTO_INCREMENT de la tabla `functions`
 --
 ALTER TABLE `functions`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `genres`
+-- AUTO_INCREMENT de la tabla `genres`
 --
 ALTER TABLE `genres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `movies`
+-- AUTO_INCREMENT de la tabla `movies`
 --
 ALTER TABLE `movies`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `theaters`
+-- AUTO_INCREMENT de la tabla `theaters`
 --
 ALTER TABLE `theaters`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
--- AUTO_INCREMENT for table `theater_rooms`
+-- AUTO_INCREMENT de la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `functions`
+-- Filtros para la tabla `functions`
 --
 ALTER TABLE `functions`
   ADD CONSTRAINT `functions_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`),
   ADD CONSTRAINT `functions_ibfk_2` FOREIGN KEY (`theater_room_id`) REFERENCES `theater_rooms` (`id`);
 
 --
--- Constraints for table `movies`
+-- Filtros para la tabla `movies`
 --
 ALTER TABLE `movies`
   ADD CONSTRAINT `movies_ibfk_1` FOREIGN KEY (`genre_id`) REFERENCES `genres` (`id`);
 
 --
--- Constraints for table `theater_rooms`
+-- Filtros para la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   ADD CONSTRAINT `theater_rooms_ibfk_1` FOREIGN KEY (`theater_id`) REFERENCES `theaters` (`id`);
