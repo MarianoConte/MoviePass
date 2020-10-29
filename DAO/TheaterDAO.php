@@ -104,7 +104,7 @@ class TheaterDAO implements ITheaterDAO
     return $this->db->getConnection()->query($sql);
   }
 
-  public function Deactivate($theater_id)
+  public function Desactivate($theater_id)
   {
     $sql =
       "UPDATE 

@@ -5,14 +5,18 @@ namespace Controllers;
 use DAO\Database\Response as Response;
 use DAO\TheaterDAO as TheaterDAO;
 use Models\Theater as Theater;
+use DAO\RoomDAO as RoomDAO;
+use Models\Room as Room;
 
 class TheaterController
 {
   private $theaterDAO;
+  private $roomDAO;
 
   public function __construct()
   {
     $this->theaterDAO = new TheaterDAO();
+    $this->roomDAO = new RoomDAO();
   }
 
   /* VIEW METHODS */
@@ -90,7 +94,7 @@ class TheaterController
   {
     $responses = [];
 
-    if ($this->theaterDAO->Deactivate($_POST['theater_id']))
+    if ($this->theaterDAO->Desactivate($_POST['theater_id']))
       array_push($responses, new Response(true, "Cine deshabilitado exitosamente."));
     else
       array_push($responses, new Response(false, "Error al deshabilitar cine."));
@@ -110,6 +114,19 @@ class TheaterController
     $this->ShowListView($responses);
   }
 
+  public function getRooms($theater_id){
+    $rooms = array();
+
+    if($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
+      $rooms = $this->roomDAO->GetByTheaterId($theater_id);
+      require_once(VIEWS_PATH . "/Room/list.php");
+    } else {
+      return header('Location: ' . FRONT_ROOT);
+    }
+
+
+    return $rooms;
+  }
   /* VALIDATORS */
 
   private function validateName(Theater $theater)

@@ -11,6 +11,6 @@ interface ITheaterDAO
   function GetByName($theater_name);
   function Add(Theater $theater);
   function Edit(Theater $theater);
-  function Deactivate($theater_id);
+  function Desactivate($theater_id);
   function Activate($theater_id);
 }
