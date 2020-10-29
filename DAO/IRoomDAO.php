@@ -9,7 +9,7 @@ interface IRoomDAO
     function GetAll();
     function GetById($room_id);
     function GetByTheaterId($theater_id);
-    function Add($theater_id, Room $room);
+    function Add(Room $room);
     function Edit(Room $room);
     function Desactivate($room_id);
     function Activate($room_id);

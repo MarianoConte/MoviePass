@@ -24,14 +24,13 @@ class RoomDAO implements IRoomDAO
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
-      while ($room = $result->fetch_assoc()) {
+      while ($dbRoom = $result->fetch_assoc()) {
         array_push(
           $rooms,
           new Room(
-            $room['id'],
-            null,
-            $room['name'],
-            $room['seats']
+            $dbRoom['id'],
+            $dbRoom['name'],
+            $dbRoom['seats']
           )
         );
       }
@@ -51,10 +50,9 @@ class RoomDAO implements IRoomDAO
     if ($result->num_rows > 0) {
       $dbRoom = $result->fetch_assoc();
       $room = new Room(
-        $room['id'],
-        null,
-        $room['name'],
-        $room['seats']
+        $dbRoom['id'],
+        $dbRoom['name'],
+        $dbRoom['seats']
       );
     }
 
@@ -68,14 +66,13 @@ class RoomDAO implements IRoomDAO
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
-      while ($room = $result->fetch_assoc()) {
+      while ($dbRoom = $result->fetch_assoc()) {
         array_push(
           $rooms,
           new Room(
-            $room['id'],
-            null,
-            $room['name'],
-            $room['seats']
+            $dbRoom['id'],
+            $dbRoom['name'],
+            $dbRoom['seats']
           )
         );
       }
@@ -83,13 +80,15 @@ class RoomDAO implements IRoomDAO
 
     return $rooms;
   }
-  function Add($theater_id, Room $room)
+
+  function Add(Room $room)
   {
     $sql = "INSERT INTO theater_rooms(theater_id, name, seats)
-      VALUES ('$theater_id','{$room->getName()}', '{$room->getSeats()}')";
+      VALUES ('{$room->getTheater()->getId()}','{$room->getName()}', '{$room->getSeats()}')";
 
     return $this->db->getConnection()->query($sql);
   }
+
   function Edit(Room $room)
   {
     $sql =

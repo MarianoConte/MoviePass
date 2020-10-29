@@ -5,21 +5,25 @@ namespace Controllers;
 use DAO\Database\Response as Response;
 use DAO\RoomDAO as RoomDAO;
 use Models\Room as Room;
+use DAO\TheaterDAO as TheaterDAO;
+use Models\Theater as Theater;
 
 class RoomController
 {
   private $roomDAO;
+  private $theaterDAO;
 
   public function __construct()
   {
     $this->roomDAO = new RoomDAO();
+    $this->theaterDAO = new TheaterDAO;
   }
 
   /* VIEW METHODS */
 
   public function ShowAddView($responses = [])
   {
-    if(!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+    if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
 
     require_once(VIEWS_PATH . "/Room/add.php");
@@ -29,7 +33,7 @@ class RoomController
   {
     $room = null;
 
-    if(!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+    if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
 
     $room = $this->roomDAO->GetById($room_id);
@@ -40,8 +44,20 @@ class RoomController
   {
     $rooms = array();
 
-    if($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
+    if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
       $rooms = $this->roomDAO->GetAll();
+      require_once(VIEWS_PATH . "/Room/list.php");
+    } else {
+      return header('Location: ' . FRONT_ROOT);
+    }
+  }
+
+  public function ShowListViewByTheater($theaterId, $responses = [])
+  {
+    $rooms = array();
+
+    if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
+      $rooms = $this->roomDAO->GetByTheaterId($theaterId);
       require_once(VIEWS_PATH . "/Room/list.php");
     } else {
       return header('Location: ' . FRONT_ROOT);
@@ -54,15 +70,14 @@ class RoomController
   {
     $responses = [];
 
-    $room = new Room(null, $_POST['name'], $_POST['seats']);
+    $theater = $this->theaterDAO->GetById($_POST['theater_id']);
 
-    $theater_id = $_POST['theater_id'];
+    $room = new Room(null, $_POST['name'], $_POST['seats'], $theater);
 
-    //$responses = //validatecineid()
-    $responses += $this->validateName($room);
+    $responses = $this->validateRoom($room);
 
-    if(empty($responses)) {
-      if ($this->roomDAO->Add($theater_id, $room))
+    if (empty($responses)) {
+      if ($this->roomDAO->Add($room))
         array_push($responses, new Response(true, "Sala registrado exitosamente."));
       else
         array_push($responses, new Response(false, "Error al registrar sala."));
@@ -75,11 +90,13 @@ class RoomController
   {
     $responses = [];
 
-    $room = new Room($_POST['id'], $_POST['name'], $_POST['seats']);
+    $theater = $this->theaterDAO->GetById($_POST['theater_id']);
 
-    $responses = $this->validateName($room);
+    $room = new Room($_POST['id'], $_POST['name'], $_POST['seats'], $theater);
 
-    if(empty($responses)) {
+    $responses = $this->validateRoom($room);
+
+    if (empty($responses)) {
       if ($this->roomDAO->Edit($room)) {
         return $this->ShowListView();
       } else {
@@ -89,7 +106,7 @@ class RoomController
     }
   }
 
-  public function Deactivate()
+  public function Desactivate()
   {
     $responses = [];
 
@@ -115,21 +132,35 @@ class RoomController
 
   /* VALIDATORS */
 
-  private function validateName($theater_id, Room $room)
+  private function validateRoom(Room $room)
   {
     $validationResponses = [];
 
     // Null validators
-    if($room->getName() == NULL)
+    if ($room->getName() == NULL)
       array_push($validationResponses, new Response(false, "Nombre requerido."));
-    if($room->getSeats() == NULL)
+    if ($room->getSeats() == NULL)
       array_push($validationResponses, new Response(false, "Cantidad de espacios requerida."));
 
-    // Name exists
-    $dbRoom = $this->roomDAO->GetByName($room->getName());
-    if($dbRoom && $dbRoom->getId() != $room->getId() &&  )
-      array_push($validationResponses, new Response(false, "El nombre ingresado ya se encuentra registrado."));
+    // Busco las salas del teatro
+    $dbRooms = $this->roomDAO->GetByTheaterId($room->getTheater()->getId());
 
+    // Filtro por nombre si el cine tiene salas
+    if ($dbRooms) {
+      $nameRoom = $this->searchByName($dbRooms, $room->getName());
+      if ($nameRoom)
+        array_push($validationResponses, new Response(false, "El nombre ingresado ya se encuentra registrado en este cine."));
+    }
     return $validationResponses;
+  }
+  private function searchByName($array, $name)
+  {
+    $res = false;
+    foreach ($array as $room) {
+      if ($room->getName() == $name) {
+        $res = true;
+      }
+    }
+    return $res;
   }
 }
