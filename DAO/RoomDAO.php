@@ -83,7 +83,6 @@ class RoomDAO implements IRoomDAO
 
     return $rooms;
   }
-
   function Add($theater_id, Room $room)
   {
     $sql = "INSERT INTO theater_rooms(theater_id, name, seats)
@@ -91,7 +90,6 @@ class RoomDAO implements IRoomDAO
 
     return $this->db->getConnection()->query($sql);
   }
-  
   function Edit(Room $room)
   {
     $sql =
@@ -102,6 +100,31 @@ class RoomDAO implements IRoomDAO
       seats='{$room->getSeats()}',
     WHERE 
       id={$room->getId()}";
+
+    return $this->db->getConnection()->query($sql);
+  }
+  public function Desactivate($room_id)
+  {
+    $sql =
+      "UPDATE 
+      theater_rooms
+    SET 
+      state=0
+    WHERE 
+      id={$room_id}";
+
+    return $this->db->getConnection()->query($sql);
+  }
+
+  public function Activate($room_id)
+  {
+    $sql =
+      "UPDATE 
+      theater_rooms
+    SET 
+      state=1
+    WHERE 
+      id={$room_id}";
 
     return $this->db->getConnection()->query($sql);
   }

@@ -27,7 +27,7 @@ class RoomController
 
   public function ShowEditView($room_id, $responses = [])
   {
-    $theater = null;
+    $room = null;
 
     if(!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
@@ -58,11 +58,12 @@ class RoomController
 
     $theater_id = $_POST['theater_id'];
 
-    $responses = $this->validateName($room);
+    //$responses = //validatecineid()
+    $responses += $this->validateName($room);
 
     if(empty($responses)) {
       if ($this->roomDAO->Add($theater_id, $room))
-        array_push($responses, new Response(true, "Sala registrada exitosamente."));
+        array_push($responses, new Response(true, "Sala registrado exitosamente."));
       else
         array_push($responses, new Response(false, "Error al registrar sala."));
     }
@@ -74,18 +75,16 @@ class RoomController
   {
     $responses = [];
 
-    $room = new Room(null, $_POST['name'], $_POST['seats']);
-
-    $theater_id = $_POST['theater_id'];
+    $room = new Room($_POST['id'], $_POST['name'], $_POST['seats']);
 
     $responses = $this->validateName($room);
 
     if(empty($responses)) {
-      if ($this->theaterDAO->Edit($theater_id, $room)) {
+      if ($this->roomDAO->Edit($room)) {
         return $this->ShowListView();
       } else {
-        array_push($responses, new Response(false, "Error al editar cine."));
-        return $this->ShowEditView($theater->getId(), $responses);
+        array_push($responses, new Response(false, "Error al editar sala."));
+        return $this->ShowEditView($room->getId(), $responses);
       }
     }
   }
@@ -94,45 +93,41 @@ class RoomController
   {
     $responses = [];
 
-    if ($this->theaterDAO->Deactivate($_POST['theater_id']))
-      array_push($responses, new Response(true, "Cine deshabilitado exitosamente."));
+    if ($this->roomDAO->Desactivate($_POST['room_id']))
+      array_push($responses, new Response(true, "Sala deshabilitada exitosamente."));
     else
-      array_push($responses, new Response(false, "Error al deshabilitar cine."));
+      array_push($responses, new Response(false, "Error al deshabilitar sala."));
 
     $this->ShowListView($responses);
   }
 
-  public function Activate($theater_id)
+  public function Activate($room_id)
   {
     $responses = [];
 
-    if ($this->theaterDAO->Activate($_POST['theater_id']))
-      array_push($responses, new Response(true, "Cine habilitado exitosamente."));
+    if ($this->roomDAO->Activate($_POST['room_id']))
+      array_push($responses, new Response(true, "Sala habilitada exitosamente."));
     else
-      array_push($responses, new Response(false, "Error al habilitar cine."));
+      array_push($responses, new Response(false, "Error al habilitar sala."));
 
     $this->ShowListView($responses);
   }
 
   /* VALIDATORS */
 
-  private function validateName(Theater $theater)
+  private function validateName($theater_id, Room $room)
   {
     $validationResponses = [];
 
     // Null validators
-    if($theater->getName() == NULL)
+    if($room->getName() == NULL)
       array_push($validationResponses, new Response(false, "Nombre requerido."));
-    if($theater->getCapacity() == NULL)
-      array_push($validationResponses, new Response(false, "Capacidad de butacas requerida."));
-    if($theater->getAddress() == NULL)
-      array_push($validationResponses, new Response(false, "Dirección requerida."));
-    if($theater->getTicketPrice() == NULL)
-      array_push($validationResponses, new Response(false, "Precio de entradasd requerido."));
+    if($room->getSeats() == NULL)
+      array_push($validationResponses, new Response(false, "Cantidad de espacios requerida."));
 
     // Name exists
-    $dbTheater = $this->theaterDAO->GetByName($theater->getName());
-    if($dbTheater && $dbTheater->getId() != $theater->getId())
+    $dbRoom = $this->roomDAO->GetByName($room->getName());
+    if($dbRoom && $dbRoom->getId() != $room->getId() &&  )
       array_push($validationResponses, new Response(false, "El nombre ingresado ya se encuentra registrado."));
 
     return $validationResponses;
