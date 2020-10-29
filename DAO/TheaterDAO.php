@@ -72,10 +72,10 @@ class TheaterDAO implements ITheaterDAO
     if ($result->num_rows > 0) {
       $dbTheater = $result->fetch_assoc();
       $theater = new Theater(
-        $theater['id'],
-        $theater['name'],
-        $theater['address'],
-        $theater['state']
+        $dbTheater['id'],
+        $dbTheater['name'],
+        $dbTheater['address'],
+        $dbTheater['state']
       );
     }
 
@@ -97,7 +97,7 @@ class TheaterDAO implements ITheaterDAO
       theaters
     SET 
       name='{$theater->getName()}',
-      address='{$theater->getAddress()}',
+      address='{$theater->getAddress()}'
     WHERE 
       id={$theater->getId()}";
 

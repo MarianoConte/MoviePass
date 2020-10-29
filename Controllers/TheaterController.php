@@ -76,9 +76,6 @@ class TheaterController
 
     $responses = $this->validateName($theater);
 
-    var_dump($theater);
-    die();
-
     if(empty($responses)) {
       if ($this->theaterDAO->Edit($theater)) {
         return $this->ShowListView();
