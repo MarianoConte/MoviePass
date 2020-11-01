@@ -8,17 +8,20 @@ class Room
   private $seats;
   private $id;
   private $theater;
+  private $state;
 
   public function __construct(
     $id = null,
     $name = null,
     $seats = null,
-    $theater = null
+    $theater = null,
+    $state = null
   ) {
     $this->id = $id;
     $this->name = $name;
     $this->seats = $seats;
     $this->theater = $theater;
+    $this->state = $state;
   }
 
   public function getName()
@@ -65,6 +68,18 @@ class Room
   public function setTheater($theater)
   {
     $this->theater = $theater;
+
+    return $this;
+  }
+
+  public function getState()
+  {
+    return $this->state;
+  }
+
+  public function setState($state)
+  {
+    $this->state = $state;
 
     return $this;
   }

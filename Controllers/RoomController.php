@@ -16,7 +16,7 @@ class RoomController
   public function __construct()
   {
     $this->roomDAO = new RoomDAO();
-    $this->theaterDAO = new TheaterDAO;
+    $this->theaterDAO = new TheaterDAO();
   }
 
   /* VIEW METHODS */
@@ -25,18 +25,17 @@ class RoomController
   {
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
-
+    $theater = $this->theaterDAO->GetById($_POST['theater_id']);
     require_once(VIEWS_PATH . "/Room/add.php");
   }
 
-  public function ShowEditView($room_id, $responses = [])
+  public function ShowEditView($theater_id, $room_id, $responses = [])
   {
-    $room = null;
-
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
 
     $room = $this->roomDAO->GetById($room_id);
+    $theater = $this->theaterDAO->GetById($theater_id);
     require_once(VIEWS_PATH . "/Room/edit.php");
   }
 
@@ -52,12 +51,12 @@ class RoomController
     }
   }
 
-  public function ShowListViewByTheater($theaterId, $responses = [])
+  public function ShowListViewByTheater($theater_id, $responses = [])
   {
     $rooms = array();
-
     if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
-      $rooms = $this->roomDAO->GetByTheaterId($theaterId);
+      $rooms = $this->roomDAO->GetByTheaterId($theater_id);
+      $theater = $this->theaterDAO->GetById($theater_id);
       require_once(VIEWS_PATH . "/Room/list.php");
     } else {
       return header('Location: ' . FRONT_ROOT);
@@ -69,9 +68,7 @@ class RoomController
   public function Add()
   {
     $responses = [];
-
     $theater = $this->theaterDAO->GetById($_POST['theater_id']);
-
     $room = new Room(null, $_POST['name'], $_POST['seats'], $theater);
 
     $responses = $this->validateRoom($room);
@@ -86,48 +83,52 @@ class RoomController
     $this->ShowAddView($responses);
   }
 
-  public function Edit()
+  public function Edit($theater_id, $room_id, $name, $seats)
   {
     $responses = [];
 
-    $theater = $this->theaterDAO->GetById($_POST['theater_id']);
+    $theater = $this->theaterDAO->GetById($theater_id);
 
-    $room = new Room($_POST['id'], $_POST['name'], $_POST['seats'], $theater);
+    $room = $this->roomDAO->GetById($room_id);
+    
+    $room->setTheater($theater);
+    $room->setName($name);
+    $room->setSeats($seats);
 
     $responses = $this->validateRoom($room);
 
     if (empty($responses)) {
       if ($this->roomDAO->Edit($room)) {
-        return $this->ShowListView();
+        return $this->ShowListViewByTheater($theater_id);
       } else {
         array_push($responses, new Response(false, "Error al editar sala."));
-        return $this->ShowEditView($room->getId(), $responses);
+        return $this->ShowEditView($theater_id, $room_id, $responses);
       }
     }
   }
 
-  public function Desactivate()
+  public function Desactivate($theater_id, $room_id)
   {
     $responses = [];
 
-    if ($this->roomDAO->Desactivate($_POST['room_id']))
+    if ($this->roomDAO->Desactivate($room_id))
       array_push($responses, new Response(true, "Sala deshabilitada exitosamente."));
     else
       array_push($responses, new Response(false, "Error al deshabilitar sala."));
 
-    $this->ShowListView($responses);
+    $this->ShowListViewByTheater($theater_id, $responses);
   }
 
-  public function Activate($room_id)
+  public function Activate($theater_id, $room_id)
   {
     $responses = [];
 
-    if ($this->roomDAO->Activate($_POST['room_id']))
+    if ($this->roomDAO->Activate($room_id))
       array_push($responses, new Response(true, "Sala habilitada exitosamente."));
     else
       array_push($responses, new Response(false, "Error al habilitar sala."));
 
-    $this->ShowListView($responses);
+    $this->ShowListViewByTheater($theater_id, $responses);
   }
 
   /* VALIDATORS */
@@ -148,17 +149,17 @@ class RoomController
     // Filtro por nombre si el cine tiene salas
     if ($dbRooms) {
       $nameRoom = $this->searchByName($dbRooms, $room->getName());
-      if ($nameRoom)
+      if ($nameRoom && $nameRoom->getId()!=$room->getId())
         array_push($validationResponses, new Response(false, "El nombre ingresado ya se encuentra registrado en este cine."));
     }
     return $validationResponses;
   }
   private function searchByName($array, $name)
   {
-    $res = false;
+    $res = null;
     foreach ($array as $room) {
       if ($room->getName() == $name) {
-        $res = true;
+        $res = $room;
       }
     }
     return $res;

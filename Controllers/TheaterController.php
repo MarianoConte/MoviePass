@@ -90,7 +90,7 @@ class TheaterController
     }
   }
 
-  public function Deactivate()
+  public function Desactivate()
   {
     $responses = [];
 

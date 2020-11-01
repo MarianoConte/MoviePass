@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 4.9.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 29-10-2020 a las 22:50:35
--- Versión del servidor: 10.4.11-MariaDB
--- Versión de PHP: 7.4.5
+-- Tiempo de generación: 02-11-2020 a las 00:49:00
+-- Versión del servidor: 10.4.8-MariaDB
+-- Versión de PHP: 7.3.11
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -71,13 +72,6 @@ CREATE TABLE `theaters` (
   `state` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Volcado de datos para la tabla `theaters`
---
-
-INSERT INTO `theaters` (`id`, `name`, `address`, `state`) VALUES
-(1, 'cine', 'dir', 1);
-
 -- --------------------------------------------------------
 
 --
@@ -88,7 +82,6 @@ CREATE TABLE `theater_rooms` (
   `id` int(11) NOT NULL,
   `theater_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
-  `price` decimal(10,0) NOT NULL,
   `seats` int(5) NOT NULL,
   `state` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -108,8 +101,6 @@ CREATE TABLE `users` (
   `role` enum('ADMIN','CUSTOMER') NOT NULL,
   `created` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
-
 
 --
 -- Índices para tablas volcadas
@@ -189,13 +180,13 @@ ALTER TABLE `theaters`
 -- AUTO_INCREMENT de la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

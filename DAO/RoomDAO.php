@@ -20,7 +20,7 @@ class RoomDAO implements IRoomDAO
   {
     $rooms = array();
 
-    $sql = "SELECT * FROM theaters_rooms";
+    $sql = "SELECT * FROM theater_rooms";
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
@@ -30,7 +30,9 @@ class RoomDAO implements IRoomDAO
           new Room(
             $dbRoom['id'],
             $dbRoom['name'],
-            $dbRoom['seats']
+            $dbRoom['seats'],
+            null,
+            $dbRoom['state']
           )
         );
       }
@@ -44,7 +46,7 @@ class RoomDAO implements IRoomDAO
     $room = null;
     $dbRoom = null;
 
-    $sql = "SELECT * FROM theaters_rooms WHERE id='{$room_id}' LIMIT 1";
+    $sql = "SELECT * FROM theater_rooms WHERE id='{$room_id}' LIMIT 1";
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
@@ -52,7 +54,9 @@ class RoomDAO implements IRoomDAO
       $room = new Room(
         $dbRoom['id'],
         $dbRoom['name'],
-        $dbRoom['seats']
+        $dbRoom['seats'],
+        null,
+        $dbRoom['state']
       );
     }
 
@@ -62,17 +66,19 @@ class RoomDAO implements IRoomDAO
   {
     $rooms = array();
 
-    $sql = "SELECT * FROM theaters_rooms WHERE theater_id='{$theater_id}'";
+    $sql = "SELECT * FROM theater_rooms WHERE theater_id='{$theater_id}'";
     $result = $this->db->getConnection()->query($sql);
 
-    if ($result->num_rows > 0) {
+    if (isset($result->num_rows) && $result->num_rows > 0) {
       while ($dbRoom = $result->fetch_assoc()) {
         array_push(
           $rooms,
           new Room(
             $dbRoom['id'],
             $dbRoom['name'],
-            $dbRoom['seats']
+            $dbRoom['seats'],
+            null,
+            $dbRoom['state']
           )
         );
       }
@@ -96,7 +102,7 @@ class RoomDAO implements IRoomDAO
       theater_rooms
     SET 
       name='{$room->getName()}',
-      seats='{$room->getSeats()}',
+      seats='{$room->getSeats()}'
     WHERE 
       id={$room->getId()}";
 
