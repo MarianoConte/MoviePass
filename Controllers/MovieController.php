@@ -2,12 +2,11 @@
 
 namespace Controllers;
 
+use DAO\Database\Response as Response;
 use DAO\MovieDAO as MovieDAO;
-use Models\Pelicula as Pelicula;
 
 class MovieController
 {
-
   private $movieDAO;
 
   public function __construct()
@@ -28,7 +27,10 @@ class MovieController
 
   public function Search($name = null, $genre = null)
   {
+    $responses = [];
+
     $res = null;
+
     if ($name) {
       if ($genre) {
         $results = $this->movieDAO->getMovieByName($name);
@@ -52,7 +54,8 @@ class MovieController
     if ($res) {
       $this->ShowMovieView($res);
     } else {
-      $this->ShowSearchView("noMovie");
+      array_push($responses, new Response(false, "No se encontraron películas con los filtros deseados."));
+      $this->ShowSearchView($responses);
     }
   }
 }
