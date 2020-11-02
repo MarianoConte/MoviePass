@@ -25,7 +25,9 @@ class RoomController
   {
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
+
     $theater = $this->theaterDAO->GetById($theater_id);
+
     require_once(VIEWS_PATH . "/Room/add.php");
   }
 
@@ -34,8 +36,8 @@ class RoomController
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
 
-    $room = $this->roomDAO->GetById($room_id);
-    $theater = $this->theaterDAO->GetById($theater_id);
+    $room = $this->getRoom($room_id, $theater_id);
+
     require_once(VIEWS_PATH . "/Room/edit.php");
   }
 
@@ -55,7 +57,8 @@ class RoomController
   {
     $rooms = array();
     if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
-      $rooms = $this->roomDAO->GetByTheaterId($theater_id);
+
+      $rooms = $this->getByTheaterId($theater_id);
       $theater = $this->theaterDAO->GetById($theater_id);
       require_once(VIEWS_PATH . "/Room/list.php");
     } else {
@@ -90,7 +93,7 @@ class RoomController
     $theater = $this->theaterDAO->GetById($theater_id);
 
     $room = $this->roomDAO->GetById($room_id);
-    
+
     $room->setTheater($theater);
     $room->setName($name);
     $room->setSeats($seats);
@@ -149,11 +152,13 @@ class RoomController
     // Filtro por nombre si el cine tiene salas
     if ($dbRooms) {
       $nameRoom = $this->searchByName($dbRooms, $room->getName());
-      if ($nameRoom && $nameRoom->getId()!=$room->getId())
+      if ($nameRoom && $nameRoom->getId() != $room->getId())
         array_push($validationResponses, new Response(false, "El nombre ingresado ya se encuentra registrado en este cine."));
     }
     return $validationResponses;
   }
+
+
   private function searchByName($array, $name)
   {
     $res = null;
@@ -163,5 +168,23 @@ class RoomController
       }
     }
     return $res;
+  }
+
+  private function getRoom($room_id, $theater_id)
+  {
+    $room = $this->roomDAO->GetById($room_id);
+    $room->setTheater($this->theaterDAO->GetById($theater_id));
+    return $room;
+  }
+
+  private function getByTheaterId($theater_id)
+  {
+    $rooms = [];
+    $rooms = $this->roomDAO->GetByTheaterId($theater_id);
+    $theater = $this->theaterDAO->GetById($theater_id);
+    foreach ($rooms as $room) {
+      $room->setTheater($theater);
+    }
+    return $rooms;
   }
 }

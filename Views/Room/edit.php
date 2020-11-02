@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 col-md-9 form-container mx-auto">
-        <h1>Editar sala para cine: <?php echo $theater->getName();?></h1>
+        <h1>Editar sala para cine: <?php echo $room->getTheater()->getName();?></h1>
         <hr>
         <?php foreach ($responses as $response) { ?>
           <?php if ($response->isSuccess()) { ?>
@@ -17,7 +17,7 @@
         <?php } ?>
         <form action="<?php echo FRONT_ROOT ?>/Room/Edit" method="POST">
 
-          <input type="hidden" name="theater_id" id="theater_id" value="<?php echo $theater->getId();?>">
+          <input type="hidden" name="theater_id" id="theater_id" value="<?php echo $room->getTheater()->getId();?>">
 
           <input type="hidden" name="room_id" id="room_id" value="<?php echo $room->getId();?>">
 
