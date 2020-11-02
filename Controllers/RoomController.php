@@ -21,11 +21,11 @@ class RoomController
 
   /* VIEW METHODS */
 
-  public function ShowAddView($responses = [])
+  public function ShowAddView($theater_id, $responses = [])
   {
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
       return header('Location: ' . FRONT_ROOT);
-    $theater = $this->theaterDAO->GetById($_POST['theater_id']);
+    $theater = $this->theaterDAO->GetById($theater_id);
     require_once(VIEWS_PATH . "/Room/add.php");
   }
 
