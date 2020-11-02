@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-6 col-md-9 form-container mx-auto">
-        <h1>Registrar sala para cine: <?php echo $theater->getName();?></h1>
+        <h1>Registrar sala: <?php echo $theater->getName();?></h1>
         <hr>
         <?php foreach ($responses as $response) { ?>
           <?php if ($response->isSuccess()) { ?>

@@ -9,10 +9,10 @@ hr {
 }
 
 .dark-background {
-  background: url(../img/background-dark.png) no-repeat center center fixed;
+  background: url(../img/background-dark.png) fixed;
 }
 .white-background {
-  background: url(../img/background-white.png) no-repeat center center fixed;
+  background: url(../img/background-white.png) fixed;
 }
 
 .navbar .navbar-brand {

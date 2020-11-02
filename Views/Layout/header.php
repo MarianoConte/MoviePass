@@ -48,6 +48,9 @@
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Theater/ShowListView">Administrar cines</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Movie/ShowSearchView">Buscar película</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/User/Logout">Cerrar sesión</a>
             </li>
           <!-- Menu cliente -->
