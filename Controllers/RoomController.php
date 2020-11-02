@@ -83,7 +83,7 @@ class RoomController
         array_push($responses, new Response(false, "Error al registrar sala."));
     }
 
-    $this->ShowAddView($responses);
+    $this->ShowAddView($_POST['theater_id'], $responses);
   }
 
   public function Edit($theater_id, $room_id, $name, $seats)
