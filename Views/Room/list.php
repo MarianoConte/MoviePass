@@ -32,10 +32,6 @@
               <td><?php echo $room->getSeats(); ?></td>
               <td><?php echo $room->getState() ? "Habilitado" : "Deshabilitado"; ?></td>
               <td class="text-right">
-                <form class="d-inline-block" action="<?php echo FRONT_ROOT . '/Function/ShowAddView'; ?>" method="post">
-                  <input type="hidden" name="theater_room_id" value=<?php echo $room->getId(); ?>>
-                  <button type="submit" class="btn btn-sm btn-success">Agregar función</button>
-                </form>
 
                 <form class="d-inline-block" action="<?php echo FRONT_ROOT . '/Room/ShowEditView'; ?>" method="post">
                   <input type="hidden" name="theater_id" value=<?php echo $theater->getId(); ?>>
