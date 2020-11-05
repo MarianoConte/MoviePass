@@ -4,7 +4,6 @@
     private $fecha;
     private $vendidas;
     private $pelicula;
-    private $day;
     private $hour;
     private $tickets;
     private $cine;
@@ -94,24 +93,5 @@
         return $this;
     }
 
-    /**
-     * Get the value of day
-     */ 
-    public function getDay()
-    {
-        return $this->day;
-    }
-
-    /**
-     * Set the value of day
-     *
-     * @return  self
-     */ 
-    public function setDay($day)
-    {
-        $this->day = $day;
-
-        return $this;
-    }
   }
 ?>
