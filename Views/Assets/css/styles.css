@@ -56,3 +56,11 @@ hr {
   top: 50%;
   transform: translateY(-50%);
 }
+
+.function {
+  display: none;
+}
+
+.card:hover .function {
+  display: block;
+}
