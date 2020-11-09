@@ -15,7 +15,7 @@
                 </div>
                 <?php } ?>
                 <?php } ?>
-                <form action="<?php echo FRONT_ROOT ?>/Movie/Search" method="POST">
+                <form action="<?php echo FRONT_ROOT ?>/Movie/Search" method="POST" id="searchForm">
                     <div class="form-group">
                         <label for="name">Nombre</label>
                         <input type="text" name="name" class="form-control" id="name"
@@ -30,9 +30,28 @@
                             <?php } ?>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-dark w-100 mt-2">Buscar</button>
+                    <div class="form-group">
+                        <label for="dateFrom">Año desde</label>
+                        <input type="number" name="dateFrom" class="form-control" id="dateFrom" placeholder="1900"
+                            max="9999" min="1900">
+                    </div>
+                    <div class="form-group">
+                        <label for="dateTo">Año hasta</label>
+                        <input type="number" name="dateTo" class="form-control" id="dateTo" placeholder="2020"
+                            max="9999" min="1900">
+                    </div>
+                    <button type="submit" id="submitButton" class="btn btn-dark w-100 mt-2">Buscar</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+$('#dateFrom').change(function() {
+    $('#dateTo').attr('min', $(this).val());
+});
+
+$('#dateTo').change(function() {
+    $('#dateFrom').attr('max', $(this).val());
+});
+</script>

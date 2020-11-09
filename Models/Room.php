@@ -12,15 +12,16 @@ class Room
 
   public function __construct(
     $id = null,
+    $theater = null,
     $name = null,
     $seats = null,
-    $theater = null,
     $state = null
+
   ) {
     $this->id = $id;
+    $this->theater = $theater;
     $this->name = $name;
     $this->seats = $seats;
-    $this->theater = $theater;
     $this->state = $state;
   }
 
@@ -83,4 +84,5 @@ class Room
 
     return $this;
   }
+
 }

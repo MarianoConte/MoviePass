@@ -17,11 +17,15 @@ class MovieController
 
   public function ShowMovieView($results)
   {
+    if(!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+      return header('Location: ' . FRONT_ROOT);
     require_once(VIEWS_PATH . "/Movie/movie.php");
   }
 
   public function ShowSearchView($responses = [])
   {
+    if(!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+      return header('Location: ' . FRONT_ROOT);
     $genres = $this->movieDAO->getAllGenres();
     require_once(VIEWS_PATH . "/Movie/search.php");
   }
@@ -67,7 +71,7 @@ class MovieController
 
   }
 
-  public function Search($name = null, $genre = null)
+  public function Search($name = null, $genre = null, $dateFrom = null, $dateTo = null)
   {
     $responses = [];
 
@@ -92,6 +96,19 @@ class MovieController
     } else if ($genre) {
       $results = $this->movieDAO->getMovieByGenre($genre);
       $res = $results;
+    }
+
+    if($dateFrom && $dateTo){
+      $movies = array();
+      foreach($res as $movie){
+
+        $yearMovie = date_format(date_create($movie->release_date), 'Y');
+
+        if($yearMovie >= $dateFrom && $yearMovie <= $dateTo) array_push($movies, $movie);
+      
+      }
+
+      $res = $movies;
     }
     if ($res) {
       $this->ShowMovieView($res);

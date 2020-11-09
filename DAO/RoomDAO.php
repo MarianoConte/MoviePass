@@ -29,9 +29,9 @@ class RoomDAO implements IRoomDAO
           $rooms,
           new Room(
             $dbRoom['id'],
+            $dbRoom['theater_id'],
             $dbRoom['name'],
             $dbRoom['seats'],
-            null,
             $dbRoom['state']
           )
         );
@@ -53,9 +53,9 @@ class RoomDAO implements IRoomDAO
       $dbRoom = $result->fetch_assoc();
       $room = new Room(
         $dbRoom['id'],
+        $dbRoom['theater_id'],
         $dbRoom['name'],
         $dbRoom['seats'],
-        null,
         $dbRoom['state']
       );
     }
@@ -75,9 +75,9 @@ class RoomDAO implements IRoomDAO
           $rooms,
           new Room(
             $dbRoom['id'],
+            $dbRoom['theater_id'],
             $dbRoom['name'],
             $dbRoom['seats'],
-            null,
             $dbRoom['state']
           )
         );

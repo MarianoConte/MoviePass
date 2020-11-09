@@ -72,7 +72,7 @@ class RoomController
   {
     $responses = [];
     $theater = $this->theaterDAO->GetById($_POST['theater_id']);
-    $room = new Room(null, $_POST['name'], $_POST['seats'], $theater);
+    $room = new Room(null, $theater, $_POST['name'], $_POST['seats']);
 
     $responses = $this->validateRoom($room);
 
