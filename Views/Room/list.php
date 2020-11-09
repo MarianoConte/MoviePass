@@ -2,12 +2,12 @@
   <div class="container">
     <div class="row mb-3">
       <div class="col-md-9">
-        <h2 class="m-0">Administración de salas de cine: <?php echo $theater->getName(); ?></h2>
+        <h2 class="m-0">Administración de salas: <?php echo $theater->getName(); ?></h2>
       </div>
 
       <form class="col-md-3 text-right position-relative" action="<?php echo FRONT_ROOT . '/Room/ShowAddView'; ?>" method="post">
         <input type="hidden" name="theater_id" value="<?php echo $theater->getId(); ?>">
-        <button type="submit" class="btn btn-sm btn-success">Agregar</button>
+        <button type="submit" class="btn btn-success">Agregar</button>
       </form>
 
 

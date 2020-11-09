@@ -64,3 +64,15 @@ hr {
 .card:hover .function {
   display: block;
 }
+.card-movie {
+  cursor: pointer;
+}
+.card-movie .card-title {
+  text-overflow: ellipsis;
+  overflow-wrap: anywhere;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.card-movie:hover .card-title {
+  white-space: unset;
+}

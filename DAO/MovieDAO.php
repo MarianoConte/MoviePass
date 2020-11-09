@@ -35,10 +35,12 @@
     }
 
     public function addMovie(Movie $movie){
+      $movieName = $this->db->getConnection()->real_escape_string($movie->getName());
+      $movieDescription = $this->db->getConnection()->real_escape_string($movie->getDescription());
 
       $sql = "INSERT INTO movies(id, name, description, genre, duration)
-        VALUES ('{$movie->getId()}','{$movie->getName()}','{$movie->getDescription()}', '{$movie->getGenre()}', '{$movie->getDuration()}')";
-  
+        VALUES ('{$movie->getId()}','{$movieName}','{$movieDescription}', '{$movie->getGenre()}', '{$movie->getDuration()}')";
+        
       return $this->db->getConnection()->query($sql);
     }
 

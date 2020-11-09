@@ -7,6 +7,7 @@ define("VIEWS_PATH", "Views");
 define("ASSETS_PATH", "Assets");
 define("CSS_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/css");
 define("JS_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/js");
+define("IMG_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/img");
 define("API_KEY", "api_key=6b34cdf03eb047963c1b8f8ecb541c0a");
 define("API_URL", "https://api.themoviedb.org/3/");
 
