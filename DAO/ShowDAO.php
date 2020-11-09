@@ -47,14 +47,19 @@ class ShowDAO implements IShowDAO
     return $shows;
   }
 
-  public function CheckShowHour($theater, $room, $date, $duration, $show_id = null)
+  public function CheckShowHour($theater, $room, $date ,$duration, $show_id = null)
   {
+    
+    $sql = "SELECT count(*) quantity FROM functions f inner join movies m on f.movie_id = m.id WHERE theater_id = $theater and theater_room_id = $room and 
+    ((DATE_ADD(f.date, INTERVAL -15 MINUTE)  between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE)) 
+    or 
+    (DATE_ADD(f.date, INTERVAL (m.duration+15) MINUTE) 
+    between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE)))";
 
-    if ($show_id == null) {
-      $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) ";
-    } else {
-      $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) and id !== $show_id";
+    if($show_id != null){
+    $sql += " and id !== $show_id";
     }
+    
     return $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
   }
 
