@@ -16,7 +16,7 @@ class ShowDAO implements IShowDAO
     $this->db = new Database();
   }
 
-  function GetAll()
+  public function GetAll()
   {
     $shows = array();
 
@@ -47,19 +47,18 @@ class ShowDAO implements IShowDAO
     return $shows;
   }
 
-  function CheckShowHour($theater, $room, $date ,$duration, $show_id = null)
+  public function CheckShowHour($theater, $room, $date, $duration, $show_id = null)
   {
 
-    if($show_id == null){
-    $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) ";
-    }
-    else{
-    $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) and id !== $show_id";
+    if ($show_id == null) {
+      $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) ";
+    } else {
+      $sql = "SELECT count(*) quantity FROM functions f WHERE theater_id = $theater and theater_room_id = $room and f.date between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE) and id !== $show_id";
     }
     return $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
   }
 
-  function Add(Show $show)
+  public function Add(Show $show)
   {
     $sql = "INSERT INTO functions(movie_id, theater_id, theater_room_id, price, date)
       VALUES ('{$show->getMovie()->getId()}','{$show->getTheater()->getId()}', '{$show->getRoom()->getId()}', '{$show->getPrice()}', '{$show->getDate()}')";
@@ -67,7 +66,7 @@ class ShowDAO implements IShowDAO
     return $this->db->getConnection()->query($sql);
   }
 
-  function Edit(Show $show)
+  public function Edit(Show $show)
   {
     $sql = "UPDATE functions SET movie_id = '{$show->getMovie()->getId()}', theater_id = '{$show->getTheater()->getId()}', 
                                  theater_room_id = '{$show->getRoom()->getId()}', price = '{$show->getPrice()}', date = '{$show->getDate()}'
@@ -76,7 +75,8 @@ class ShowDAO implements IShowDAO
     return $this->db->getConnection()->query($sql);
   }
 
-  function GetById($show_id){
+  public function GetById($show_id)
+  {
 
     $show = null;
     $dbShow = null;
@@ -97,8 +97,5 @@ class ShowDAO implements IShowDAO
     }
 
     return $show;
-
   }
-
-  
 }

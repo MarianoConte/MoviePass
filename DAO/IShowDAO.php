@@ -8,7 +8,7 @@ interface IShowDAO
 {
     function GetAll();
    // function GetByTheaterAndRoom($theater, $room);
-    function CheckShowHour($theater, $room, $date ,$duration, $show_id);
+    function CheckShowHour($theater, $room, $date ,$duration,  $show_id = null);
     function GetById($show_id);
     function Add(Show $show);
     function Edit(Show $show);

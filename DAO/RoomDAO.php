@@ -16,7 +16,7 @@ class RoomDAO implements IRoomDAO
     $this->db = new Database();
   }
 
-  function GetAll()
+  public function GetAll()
   {
     $rooms = array();
 
@@ -87,7 +87,7 @@ class RoomDAO implements IRoomDAO
     return $rooms;
   }
 
-  function Add(Room $room)
+  public function Add(Room $room)
   {
     $sql = "INSERT INTO theater_rooms(theater_id, name, seats)
       VALUES ('{$room->getTheater()->getId()}','{$room->getName()}', '{$room->getSeats()}')";
@@ -95,7 +95,7 @@ class RoomDAO implements IRoomDAO
     return $this->db->getConnection()->query($sql);
   }
 
-  function Edit(Room $room)
+  public function Edit(Room $room)
   {
     $sql =
       "UPDATE 

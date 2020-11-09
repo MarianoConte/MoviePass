@@ -121,7 +121,7 @@ class ShowController
 
     if (empty($responses)) {
       if ($this->showDAO->Add($show))
-        array_push($responses, new Response(true, "Sala registrado exitosamente."));
+        array_push($responses, new Response(true, "Función registrada exitosamente."));
       else
         array_push($responses, new Response(false, "Error al registrar la función."));
     }
