@@ -20,7 +20,30 @@ hr {
 }
 
 .section-container {
-  height: calc(100vh - 71px);
+  min-height: calc(100vh - 71px);
+}
+
+/* INDEX */
+.index-carousel-ads {
+  background: #ffffff17;
+}
+.index-carousel-ads .carousel-ads .carousel-item {
+  padding: 1rem;
+  padding-bottom: 2rem;
+  text-align: center;
+  color: #fafafa
+}
+.index-carousel-ads .carousel-ads h1 {
+  margin: 0;
+}
+
+.index-listings {
+  background: #ffffff30;
+  text-align: center;
+  color: #fafafa;
+}
+.index-listings h3 {
+  margin: 0;
 }
 
 .table-container {

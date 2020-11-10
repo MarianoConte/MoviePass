@@ -7,6 +7,7 @@ use Models\Show as Show;
 interface IShowDAO
 {
     function GetAll();
+    function GetByMovie($movie_id);
    // function GetByTheaterAndRoom($theater, $room);
     function CheckShowHour($theater, $room, $date ,$duration,  $show_id = null);
     function GetById($show_id);

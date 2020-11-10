@@ -47,6 +47,37 @@ class ShowDAO implements IShowDAO
     return $shows;
   }
 
+  public function GetByMovie($movie_id) {
+    $shows = array();
+
+    $sql = "SELECT
+            f.id as id, m.name as movie, t.name as theater, r.name as room, f.price as price, f.date as date
+            FROM functions f
+            inner join theaters t on f.theater_id = t.id
+            inner join movies m on f.movie_id = m.id
+            inner join theater_rooms r on f.theater_room_id = r.id
+            WHERE f.movie_id = $movie_id";
+    $result = $this->db->getConnection()->query($sql);
+
+    if ($result->num_rows > 0) {
+      while ($dbShow = $result->fetch_assoc()) {
+        array_push(
+          $shows,
+          new Show(
+            $dbShow['id'],
+            $dbShow['movie'],
+            $dbShow['theater'],
+            $dbShow['room'],
+            $dbShow['price'],
+            $dbShow['date']
+          )
+        );
+      }
+    }
+
+    return $shows;
+  }
+
   public function CheckShowHour($theater, $room, $date ,$duration, $show_id = null)
   {
     

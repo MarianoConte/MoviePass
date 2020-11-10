@@ -50,7 +50,7 @@ class MovieController
   {
     $movie = file_get_contents(API_URL . "movie/" . $_POST['movie_id'] . "?" . API_KEY . "&language=es-AR");
     $movie = json_decode($movie);
-    $new_movie = new Movie($movie->id, $movie->title, $movie->overview, $movie->genres[0]->name, $movie->runtime);
+    $new_movie = new Movie($movie->id, $movie->title, $movie->overview, $movie->genres[0]->name, $movie->runtime, 'https://image.tmdb.org/t/p/w500'.$movie->poster_path);
 
     $responses = [];
 

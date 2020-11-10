@@ -4,8 +4,9 @@
   use DAO\IMovieDAO as IMovieDAO;
   use Models\Movie as Movie;
   use DAO\Database\Database as Database;
+use mysqli;
 
-  Class MovieDAO implements IMovieDAO{
+Class MovieDAO implements IMovieDAO{
     
     private $db;
 
@@ -38,16 +39,16 @@
       $movieName = $this->db->getConnection()->real_escape_string($movie->getName());
       $movieDescription = $this->db->getConnection()->real_escape_string($movie->getDescription());
 
-      $sql = "INSERT INTO movies(id, name, description, genre, duration)
-        VALUES ('{$movie->getId()}','{$movieName}','{$movieDescription}', '{$movie->getGenre()}', '{$movie->getDuration()}')";
+      $sql = "INSERT INTO movies(id, name, description, genre, duration, image)
+        VALUES ('{$movie->getId()}','{$movieName}','{$movieDescription}', '{$movie->getGenre()}', '{$movie->getDuration()}', '{$movie->getImage()}')";
         
-      return $this->db->getConnection()->query($sql);
+      $this->db->getConnection()->query($sql);
     }
 
     public function getMoviesOnLocalDB(){
     $movies = array();
 
-    $sql = "SELECT * FROM movies";
+    $sql = "SELECT * FROM movies ORDER BY id DESC";
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
@@ -59,7 +60,8 @@
             $dbMovie['name'],
             $dbMovie['description'],
             $dbMovie['genre'],
-            $dbMovie['duration']
+            $dbMovie['duration'],
+            $dbMovie['image']
           )
         );
       }
@@ -82,7 +84,8 @@
         $dbMovie['name'],
         $dbMovie['description'],
         $dbMovie['genre'],
-        $dbMovie['duration']
+        $dbMovie['duration'],
+        $dbMovie['image']
       );
     }
 
