@@ -129,37 +129,6 @@ class ShowController
     $this->ShowAddView($responses);
   }
 
-  private function validateShow(Show $show, $show_id = null)
-  {
-    $validationResponses = [];
-
-    // Null validators
-    if ($show->getTheater() == NULL)
-      array_push($validationResponses, new Response(false, "Cine requerido."));
-    if ($show->getRoom() == NULL)
-      array_push($validationResponses, new Response(false, "Sala requerida."));
-    if ($show->getMovie() == NULL)
-      array_push($validationResponses, new Response(false, "Película requerida."));
-    if ($show->getPrice() == NULL)
-      array_push($validationResponses, new Response(false, "Precio de entrada requerido."));
-    if ($show->getDate() == NULL)
-      array_push($validationResponses, new Response(false, "Fecha y hora requerida."));
-
-    
-    if($show_id == null){
-      
-      // Busco si hay funciones dentro de ese horario
-      $dbShows = $this->showDAO->CheckShowHour($show->getTheater()->getId(),$show->getRoom()->getId(), $show->getDate(), $show->getMovie()->getDuration(), $show_id);
-
-      // Filtro por nombre si el cine tiene salas
-      if ($dbShows>0) {
-        array_push($validationResponses, new Response(false, "Ya hay una función programada que interfiere con el horario en ese cine y esa sala"));
-      }
-    }
-    return $validationResponses;
-  }
-
-
   public function Edit()
   {
     $responses = [];
@@ -183,8 +152,32 @@ class ShowController
     $this->ShowEditView($_POST['show_id'], $responses);
   }
 
+  private function validateShow(Show $show, $show_id = null)
+  {
+    $validationResponses = [];
 
+    // Null validators
+    if ($show->getTheater() == NULL)
+      array_push($validationResponses, new Response(false, "Cine requerido."));
+    if ($show->getRoom() == NULL)
+      array_push($validationResponses, new Response(false, "Sala requerida."));
+    if ($show->getMovie() == NULL)
+      array_push($validationResponses, new Response(false, "Película requerida."));
+    if ($show->getPrice() == NULL)
+      array_push($validationResponses, new Response(false, "Precio de entrada requerido."));
+    if ($show->getDate() == NULL)
+      array_push($validationResponses, new Response(false, "Fecha y hora requerida."));
 
+      // Busco si hay funciones dentro de ese horario
+      $dbShows = $this->showDAO->CheckShowHour($show->getTheater()->getId(),$show->getRoom()->getId(), $show->getDate(), $show->getMovie()->getDuration(), $show_id);
+
+      // Filtro por nombre si el cine tiene salas
+      if ($dbShows>0) {
+        array_push($validationResponses, new Response(false, "La sala seleccionada se encuentra ocupada en el horario definido."));
+      }
+
+    return $validationResponses;
+  }
 }
 
 ?>

@@ -42,7 +42,7 @@ Class MovieDAO implements IMovieDAO{
       $sql = "INSERT INTO movies(id, name, description, genre, duration, image)
         VALUES ('{$movie->getId()}','{$movieName}','{$movieDescription}', '{$movie->getGenre()}', '{$movie->getDuration()}', '{$movie->getImage()}')";
         
-      $this->db->getConnection()->query($sql);
+      return $this->db->getConnection()->query($sql);
     }
 
     public function getMoviesOnLocalDB(){

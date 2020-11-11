@@ -45,6 +45,10 @@ hr {
 .index-listings h3 {
   margin: 0;
 }
+.index-listings hr {
+  border-color: #8c8c8c;
+  width: 30%;
+}
 
 .table-container {
   background: #f9f9f9;

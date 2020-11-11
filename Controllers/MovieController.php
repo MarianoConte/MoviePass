@@ -58,7 +58,7 @@ class MovieController
 
     if (empty($responses)) {
       if ($this->movieDAO->addMovie($new_movie))
-        array_push($responses, new Response(true, "Película registrado exitosamente."));
+        array_push($responses, new Response(true, "Película registrada exitosamente."));
       else
         array_push($responses, new Response(false, "Error al registrar película."));
     }
@@ -115,13 +115,21 @@ class MovieController
       $res = $results;
     }
 
-    if ($dateFrom && $dateTo) {
+    if ($dateFrom || $dateTo) {
       $movies = array();
       foreach ($res as $movie) {
-
         $yearMovie = date_format(date_create($movie->release_date), 'Y');
 
-        if ($yearMovie >= $dateFrom && $yearMovie <= $dateTo) array_push($movies, $movie);
+        if($dateFrom && $dateTo) {
+          if ($yearMovie >= $dateFrom && $yearMovie <= $dateTo)
+            array_push($movies, $movie);
+        } else if($dateFrom) {
+          if ($yearMovie >= $dateFrom)
+            array_push($movies, $movie);
+        } else if($dateTo) {
+          if ($yearMovie <= $dateTo)
+            array_push($movies, $movie);
+        }
       }
 
       $res = $movies;

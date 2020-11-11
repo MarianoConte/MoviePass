@@ -87,8 +87,8 @@ class ShowDAO implements IShowDAO
     (DATE_ADD(f.date, INTERVAL (m.duration+15) MINUTE) 
     between DATE_ADD('$date', INTERVAL -15 MINUTE) AND DATE_ADD('$date', INTERVAL ($duration+15) MINUTE)))";
 
-    if($show_id != null){
-    $sql += " and id !== $show_id";
+    if($show_id != null) {
+      $sql = $sql . " and f.id != $show_id";
     }
     
     return $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];

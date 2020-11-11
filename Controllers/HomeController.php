@@ -21,7 +21,7 @@ class HomeController {
   }    
   
   private function getActiveMovies() {
-    $movies = array_slice($this->movieDAO->getMoviesOnLocalDB(), 0, 4);
+    $movies = $this->movieDAO->getMoviesOnLocalDB();
     $activeMovies = array();
 
     foreach($movies as $movie) {
@@ -30,6 +30,6 @@ class HomeController {
       }
     }
 
-    return $activeMovies;
+    return array_slice($activeMovies, 0, 4);
   }
 }
