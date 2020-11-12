@@ -123,6 +123,11 @@ class ShowDAO implements IShowDAO
     return $this->db->getConnection()->query($sql);
   }
 
+  public function Delete($show_id){
+     $sql = "DELETE FROM functions WHERE id = $show_id";
+     return $this->db->getConnection()->query($sql);
+  }
+
   public function CheckShowHour($theater, $room, $date, $duration, $show_id = null)
   {
     $sql = "SELECT count(*) quantity FROM functions f inner join movies m on f.movie_id = m.id WHERE theater_id = $theater and theater_room_id = $room and 

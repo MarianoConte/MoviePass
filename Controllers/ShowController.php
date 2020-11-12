@@ -147,6 +147,15 @@ class ShowController
     $this->ShowEditView($_POST['show_id'], $responses);
   }
 
+  public function Delete($show_id, $responses = []){
+    if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+    return header('Location: ' . FRONT_ROOT);
+
+    $query = $this->showDAO->Delete($show_id);
+
+    $this->ShowListView();
+  }
+
   /* HELPERS */
 
   private function validateShow(Show $show, $show_id = null)

@@ -13,4 +13,5 @@ interface IShowDAO
     function GetById($show_id);
     function Add(Show $show);
     function Edit(Show $show);
+    function Delete($show_id);
 }
