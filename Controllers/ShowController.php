@@ -52,7 +52,7 @@ class ShowController
     foreach ($theaters as $theater) {
       $new_rooms = array();
       foreach ($rooms as $room)
-        if ($room->getTheater() == $theater->getId()) {
+        if ($room->getState() == true && $room->getTheater() == $theater->getId()) {
           array_push($new_rooms, $room);
         }
       $theater->setRooms($new_rooms);
@@ -87,7 +87,7 @@ class ShowController
     foreach ($theaters as $theater) {
       $new_rooms = array();
       foreach ($rooms as $room)
-        if ($room->getTheater() == $theater->getId()) {
+        if ($room->getState() == true && $room->getTheater() == $theater->getId()) {
           array_push($new_rooms, $room);
         }
       $theater->setRooms($new_rooms);
