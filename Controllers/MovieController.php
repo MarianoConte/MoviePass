@@ -50,14 +50,14 @@ class MovieController
   {
     $movie = file_get_contents(API_URL . "movie/" . $_POST['movie_id'] . "?" . API_KEY . "&language=es-AR");
     $movie = json_decode($movie);
-    $new_movie = new Movie($movie->id, $movie->title, $movie->overview, $movie->genres[0]->name, $movie->runtime, 'https://image.tmdb.org/t/p/w500'.$movie->poster_path);
+    $newMovie = new Movie(null, $movie->id, $movie->title, $movie->overview, $movie->genres[0]->name, $movie->runtime, 'https://image.tmdb.org/t/p/w500'.$movie->poster_path);
 
     $responses = [];
 
-    $responses = $this->valiDateMovie($new_movie);
+    $responses = $this->validateMovie($newMovie);
 
     if (empty($responses)) {
-      if ($this->movieDAO->addMovie($new_movie))
+      if ($this->movieDAO->addMovie($newMovie))
         array_push($responses, new Response(true, "Película registrada exitosamente."));
       else
         array_push($responses, new Response(false, "Error al registrar película."));
@@ -69,7 +69,6 @@ class MovieController
 
   public function validateMovie(Movie $movie)
   {
-
     $validationResponses = [];
 
     if ($movie->getName() == NULL)
@@ -81,7 +80,7 @@ class MovieController
     if ($movie->getDuration() == NULL)
       array_push($validationResponses, new Response(false, "Duración no encontrada."));
 
-    $dbMovie = $this->movieDAO->getMovieOnLocalDBById($movie->getId());
+    $dbMovie = $this->movieDAO->getMovieOnLocalDBById($movie->getApiMovieId());
     if ($dbMovie)
       array_push($validationResponses, new Response(false, "La película ingresada ya se encuentra registrada."));
 

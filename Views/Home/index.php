@@ -37,8 +37,11 @@
       <div class="row listings">
         <?php if(!empty($movies)) { ?>
           <?php foreach($movies as $movie) { ?>
+            <form action="<?php echo FRONT_ROOT ?>/Home/ShowMovieDetails" method="POST" id="form-movie-<?php echo $movie->getId() ?>">
+              <input type="hidden" name="movie_id" value="<?php echo $movie->getId() ?>">
+            </form>
             <div class="col-6 col-md-3">
-              <div class="card card-movie">
+              <div class="card card-movie" onclick="document.getElementById('form-movie-<?php echo $movie->getId() ?>').submit()">
                 <img class="card-img-top"
                   src="<?php echo $movie->getImage(); ?>"
                   alt="<?php echo IMG_PATH . '/movie-image.png'; ?>"

@@ -4,15 +4,17 @@ namespace Models;
 
 Class Movie
 {
-  private $name;
-  private $genre;
-  private $description;
   private $id;
+  private $api_movie_id;
+  private $name;
+  private $description;
+  private $genre;
   private $duration;
   private $image;
 
   public function __construct(
     $id = null,
+    $api_movie_id = null,
     $name = null,
     $description = null,
     $genre = null,
@@ -20,6 +22,7 @@ Class Movie
     $image = null
   ) {
     $this->id = $id;
+    $this->api_movie_id = $api_movie_id;
     $this->name = $name;
     $this->description = $description;
     $this->genre = $genre;
@@ -31,9 +34,20 @@ Class Movie
   {
     return $this->id;
   }
+  
   public function setId($id)
   {
     $this->id = $id;
+  }
+
+  public function getApiMovieId()
+  {
+    return $this->api_movie_id;
+  }
+
+  public function setApiMovieId($api_movie_id)
+  {
+    $this->api_movie_id = $api_movie_id;
   }
 
   public function getName()
@@ -47,7 +61,19 @@ Class Movie
 
     return $this;
   }
- 
+
+  public function getDescription()
+  {
+    return $this->description;
+  }
+
+  public function setDescription($description)
+  {
+    $this->description = $description;
+
+    return $this;
+  }
+
   public function getGenre()
   {
     return $this->genre;
@@ -68,18 +94,6 @@ Class Movie
   public function setDuration($duration)
   {
     $this->duration = $duration;
-
-    return $this;
-  }
- 
-  public function getDescription()
-  {
-    return $this->description;
-  }
-
-  public function setDescription($description)
-  {
-    $this->description = $description;
 
     return $this;
   }

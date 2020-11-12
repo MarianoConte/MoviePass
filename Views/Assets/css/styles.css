@@ -50,6 +50,68 @@ hr {
   width: 30%;
 }
 
+/* MOVIE DETAILS */
+.movie-details .movie-details-image img  {
+  width: 100%;
+}
+.movie-details .movie-details-data .movie-details-data-title  {
+  margin: 0;
+  color: #fafafa;
+}
+.movie-details .movie-details-data .movie-details-data-desc  {
+  margin-top: 1rem;
+  margin-bottom: unset;
+  color: #fafafa;
+  font-size: 1rem;
+}
+
+.movie-details .movie-details-shows h2 {
+  margin: 0;
+  color: #fafafa;
+  font-weight: 300 !important;
+}
+.movie-details .movie-details-shows hr {
+  border-color: #8c8c8c;
+  width: 100%;
+  max-width: 200px;
+}
+.movie-details .movie-details-shows .movie-details-show {
+  background: #ffffff12;
+}
+.movie-details .movie-details-show .movie-details-show-theater {
+  font-size: 1.60rem;
+  font-weight: 300 !important;
+  margin: 0;
+  color: #fafafa;
+}
+.movie-details .movie-details-show .movie-details-show-desc {
+  font-weight: 300 !important;
+  margin: 0;
+  color: #fafafa;
+}
+.movie-details .movie-details-show .movie-details-show-buy {
+  background: #bfa80040;
+  margin-left: -16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.movie-details .movie-details-show .movie-details-show-buy:hover {
+  background: #bfa8006b;
+}
+.movie-details .movie-details-show .movie-details-show-buy-text {
+  position: absolute;
+  font-size: 1.25rem;
+  color: #fafafa;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.movie-details .movie-details-show .movie-details-show-buy-text span {
+  font-size: 1.75rem;
+}
+
+/* GENERAL */
+
 .table-container {
   background: #f9f9f9;
   border: 1px solid #c3c3c3;

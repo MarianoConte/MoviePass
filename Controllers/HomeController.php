@@ -14,11 +14,23 @@ class HomeController {
     $this->showDAO = new ShowDAO();
   }
 
+  /* VIEW METHODS */
+
   public function index($message = "")
   {
     $movies = $this->getActiveMovies();
     require_once(VIEWS_PATH."/Home/index.php");
-  }    
+  }
+
+  public function ShowMovieDetails($movie_id) {
+    $movie = $this->movieDAO->getMovieOnLocalDBById($movie_id);
+    $shows = $this->showDAO->GetByMovie($movie_id);
+    require_once(VIEWS_PATH."/Home/movie_details.php");
+  }
+
+  /* CONTROLLER METHODS */
+
+  /* HELPERS */
   
   private function getActiveMovies() {
     $movies = $this->movieDAO->getMoviesOnLocalDB();
