@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-9 movie-details-data">
           <h1 class="movie-details-data-title">
-            <?php echo $movie->getName(); ?>
+            <strong><?php echo $movie->getName(); ?></strong>
           </h1>
           <p class="movie-details-data-desc">
             <?php echo $movie->getDescription(); ?>
