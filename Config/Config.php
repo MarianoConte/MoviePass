@@ -10,6 +10,7 @@ define("JS_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/js");
 define("IMG_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/img");
 define("API_KEY", "api_key=6b34cdf03eb047963c1b8f8ecb541c0a");
 define("API_URL", "https://api.themoviedb.org/3/");
+define("DOMAIN", "http://localhost");
 
 // Database data
 define("SERVERNAME", "localhost");
@@ -18,7 +19,3 @@ define("PASSWORD", "");
 define("DATABASE_NAME", "moviepass");
 
 ?>
-
-
-
-

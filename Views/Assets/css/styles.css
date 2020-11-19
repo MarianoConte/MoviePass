@@ -165,3 +165,32 @@ hr {
 .card-movie:hover .card-title {
   white-space: unset;
 }
+
+.btn-fb:focus {
+  background: #163e88;
+  border-color: #1c499c;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0,0,20,.4);
+  text-decoration: none;
+}
+
+.btn-fb{
+  color:#fff;
+  background-color:#3A5A97;
+  border-color:#3A5A97
+}
+.btn-fb:hover{
+  color:#fff;
+  background-color:#163e88;
+  border-color:#163e88
+}
+
+.btn-fb:active{
+  color:#fff;
+  background-color:#163e88;
+  border-color:#163e88
+}
+.btn-fb.focus,.btn-fb:focus{
+  box-shadow:0 0 0 .2rem rgba(38,143,255,.5)
+}
+
