@@ -1,6 +1,6 @@
 <div class="dark-background section-container">
   <div class="container-fluid movie-details py-3">
-    <div class="container">
+    <div class="container table">
       <div class="row">
         <div class="col-md-3 movie-details-image">
           <img src="<?php echo $movie->getImage(); ?>" alt="">

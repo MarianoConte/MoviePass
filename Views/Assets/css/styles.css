@@ -110,6 +110,11 @@ hr {
   font-size: 1.75rem;
 }
 
+.table{
+  background-color: #3b3b3ba6;
+  padding-top: 10px;
+}
+
 /* GENERAL */
 
 .table-container {
