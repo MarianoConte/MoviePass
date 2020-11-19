@@ -36,12 +36,12 @@
 
   <nav class="navbar navbar-expand-lg bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>">MoviePass</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
+        <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>">MoviePass</a>
           <!-- Menu administrador -->
           <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'ADMIN') { ?>
             <li class="nav-item">
