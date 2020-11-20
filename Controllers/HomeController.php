@@ -36,7 +36,15 @@ class HomeController {
 
   public function ShowMovieDetails($movie_id) {
     $movie = $this->movieDAO->getMovieOnLocalDBById($movie_id);
-    $shows = $this->showDAO->GetByMovie($movie_id);
+
+    $data = $this->showDAO->GetByMovie($movie_id);
+
+    $shows = array_filter($data, function($show){
+      date_default_timezone_set(TIME_ZONE);
+      $showDate = date("d/m/Y H:i", strtotime($show->getDate()));
+      $currentDate = date("d/m/Y H:i",time());
+      return ($currentDate > $showDate) ? false : true; 
+    });
     require_once(VIEWS_PATH."/Home/movie_details.php");
   }
 

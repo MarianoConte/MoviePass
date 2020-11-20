@@ -11,6 +11,7 @@ define("IMG_PATH", FRONT_ROOT.'/'.VIEWS_PATH.'/'.ASSETS_PATH."/img");
 define("API_KEY", "api_key=93e965aff08c0f589671eb501c17f038");
 define("API_URL", "https://api.themoviedb.org/3/");
 define("DOMAIN", "http://localhost");
+define('TIME_ZONE', 'America/Argentina/Buenos_Aires');
 
 // Database data
 define("SERVERNAME", "localhost");
