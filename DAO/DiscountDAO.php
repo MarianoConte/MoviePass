@@ -24,7 +24,7 @@ class DiscountDAO implements IDiscountDAO
     $sql = "SELECT * FROM discounts";
     $result = $this->db->getConnection()->query($sql);
 
-    if ($result->num_rows > 0) {
+    if ($result && $result->num_rows > 0) {
       while ($dbDiscount = $result->fetch_assoc()) {
         array_push(
           $discounts,
