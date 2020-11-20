@@ -44,19 +44,27 @@
                         Sala: <?php echo $show->getRoom()->getName(); ?>
                       </h5>
                       <h5 class="movie-details-show-desc">
-                        Asientos: <?php echo $show->getRoom()->getSeats (); ?>
+                        Asientos disponibles: <?php echo $show->getAvailableTickets(); ?>
                       </h5>
                     </div>
-                    <div class="col-md-3 movie-details-show-buy" onclick="document.getElementById('form-show-<?php echo $show->getId() ?>').submit()">
-                      <div class="movie-details-show-buy-text text-center">
-                        <form action="<?php echo FRONT_ROOT ?>/Home/ShowBuyTickets" method="POST" id="form-show-<?php echo $show->getId() ?>">
-                          <input type="hidden" name="show_id" value="<?php echo $show->getId() ?>">
-                        </form>
-                        Reservar<br>asiento
-                        <hr class="my-2">
-                        <span>$<?php echo $show->getPrice(); ?></span>
+                    <?php if($show->getAvailableTickets() > 0) { ?>
+                      <div class="col-md-3 movie-details-show-buy" onclick="document.getElementById('form-show-<?php echo $show->getId() ?>').submit()">
+                        <div class="movie-details-show-buy-text text-center">
+                          <form action="<?php echo FRONT_ROOT ?>/Home/ShowBuyTickets" method="POST" id="form-show-<?php echo $show->getId() ?>">
+                            <input type="hidden" name="show_id" value="<?php echo $show->getId() ?>">
+                          </form>
+                          Reservar<br>asiento
+                          <hr class="my-2">
+                          <span>$<?php echo $show->getPrice(); ?></span>
+                        </div>
                       </div>
-                    </div>
+                    <?php } else { ?>
+                      <div class="col-md-3 movie-details-show-buy">
+                        <div class="movie-details-show-buy-text text-center">
+                          Entradas<br>agotadas
+                        </div>
+                      </div>
+                    <?php } ?>
                   </div>
                 </div>
               </div>

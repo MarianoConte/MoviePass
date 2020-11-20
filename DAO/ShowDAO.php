@@ -74,7 +74,8 @@ class ShowDAO implements IShowDAO
             new Theater(null, $dbShow['theater_name'], $dbShow['theater_address']),
             new Room(null, null, $dbShow['theater_room_name'], $dbShow['theater_room_seats']),
             $dbShow['price'],
-            $dbShow['date']
+            $dbShow['date'],
+            $this->GetAvailableTickets($dbShow['id'])
           )
         );
       }
@@ -99,7 +100,8 @@ class ShowDAO implements IShowDAO
         $dbShow['theater_id'],
         $dbShow['theater_room_id'],
         $dbShow['price'],
-        $dbShow['date']
+        $dbShow['date'],
+        $this->GetAvailableTickets($dbShow['id'])
       );
     }
 
@@ -126,6 +128,21 @@ class ShowDAO implements IShowDAO
   public function Delete($show_id){
      $sql = "DELETE FROM functions WHERE id = $show_id";
      return $this->db->getConnection()->query($sql);
+  }
+
+  public function GetAvailableTickets($show_id)
+  {
+    $sql = "SELECT
+            (r.seats - COUNT(ts.id)) as available_tickets
+            FROM functions f
+            INNER JOIN theater_rooms r on f.theater_room_id = r.id
+            INNER JOIN tickets ts on f.id = ts.function_id
+            WHERE f.id = $show_id";
+
+    $result = $this->db->getConnection()->query($sql);
+    $dbAvailableTickets = $result->fetch_assoc()['available_tickets'];
+
+    return $dbAvailableTickets;
   }
 
   public function CheckShowHour($theater, $room, $date, $duration, $show_id = null)

@@ -7,6 +7,7 @@
     private $room;
     private $id;
     private $price;
+    private $availableTickets;
 
     public function __construct(
       $id = null,
@@ -14,7 +15,8 @@
       $theater = null,
       $room = null,
       $price = null,
-      $date = null
+      $date = null,
+      $availableTickets = null
     ) {
       $this->id = $id;
       $this->movie = $movie;
@@ -22,6 +24,7 @@
       $this->room = $room;
       $this->price = $price;
       $this->date = $date;
+      $this->availableTickets = $availableTickets;
     }
 
     public function getDate()
@@ -92,6 +95,18 @@
     public function setPrice($price)
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getAvailableTickets()
+    {
+        return $this->availableTickets;
+    }
+
+    public function setAvailableTickets($availableTickets)
+    {
+        $this->availableTickets = $availableTickets;
 
         return $this;
     }

@@ -45,67 +45,73 @@
           </div>
         </div>
       </div>
-      <?php if(isset($_SESSION['user'])) { ?>
-        <form action="<?php echo FRONT_ROOT ?>/Home/BuyTickets" method="POST" id="form-payment" class="row payment-info mt-3 m-0">
-          <input type="hidden" name="show_id" value="<?php echo $show->getId(); ?>">
-          <div class="col-12">
-            <h3 class="mt-3 mb-0">Datos de compra</h3>
-            <hr class="my-2">
-            <?php foreach($responses as $response) { ?>
-              <?php if($response->isSuccess()) { ?>
-                <div class="alert alert-success" role="alert">
-                  <?php echo $response->getMessage(); ?>
-                </div>
-              <?php } else { ?>
-                <div class="alert alert-danger" role="alert">
-                  <?php echo $response->getMessage(); ?>
-                </div>
+      <?php if($show->getAvailableTickets() > 0) { ?>
+        <?php if(isset($_SESSION['user'])) { ?>
+          <form action="<?php echo FRONT_ROOT ?>/Home/BuyTickets" method="POST" id="form-payment" class="row payment-info mt-3 m-0">
+            <input type="hidden" name="show_id" value="<?php echo $show->getId(); ?>">
+            <div class="col-12">
+              <h3 class="mt-3 mb-0">Datos de compra</h3>
+              <hr class="my-2">
+              <?php foreach($responses as $response) { ?>
+                <?php if($response->isSuccess()) { ?>
+                  <div class="alert alert-success" role="alert">
+                    <?php echo $response->getMessage(); ?>
+                  </div>
+                <?php } else { ?>
+                  <div class="alert alert-danger" role="alert">
+                    <?php echo $response->getMessage(); ?>
+                  </div>
+                <?php } ?>
               <?php } ?>
-            <?php } ?>
-          </div>
-          <div class="col-md-2 my-3">
-            <div class="form-group tickets-quantity">
-              <label for="quantity" class="w-100 text-center">Entradas</label>
-              <input type="number" name="quantity" id="quantity" class="form-control form-control-lg m-0" placeholder="Entradas" min="1" required>
-              <h1 id="total-price" class="tickets-total-price text-center mt-2">$0</h1>
             </div>
-          </div>
-          <div class="col-md-6 my-3">
-            <div class="row card-details">
-              <div class="form-group col-md-9 pr-2">
-                <label for="number">Número de tarjeta</label>
-                <input type="text" name="number" id="number" class="form-control" placeholder="Número" required>
-              </div>
-              <div class="form-group col-md-3 pl-2">
-                <label for="expiry">Vencimiento</label>
-                <input type="text" name="expiry" id="expiry" class="form-control" placeholder="Vencimiento" required>
-              </div>
-              <div class="form-group col-md-9 pr-2">
-                <label for="name">Nombre y apellido</label>
-                <input type="text" name="name" id="name" class="form-control" placeholder="Nombre y apellido" required>
-              </div>
-              <div class="form-group col-md-3 pl-2">
-                <label for="cvc">CVC</label>
-                <input type="text" name="cvc" id="cvc" class="form-control" placeholder="CVC" required>
+            <div class="col-md-2 my-3">
+              <div class="form-group tickets-quantity">
+                <label for="quantity" class="w-100 text-center">Entradas</label>
+                <input type="number" name="quantity" id="quantity" class="form-control form-control-lg m-0" placeholder="Max: <?php echo $show->GetAvailableTickets(); ?>" min="1" max="<?php echo $show->GetAvailableTickets(); ?>" required>
+                <h1 id="total-price" class="tickets-total-price text-center mt-2">$0</h1>
               </div>
             </div>
-          </div>
-          <div class="col-md-4 card-wrapper my-3"></div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-confirm-payment">Comprar</button>
-          </div>
-        </form>
+            <div class="col-md-6 my-3">
+              <div class="row card-details">
+                <div class="form-group col-md-9 pr-2">
+                  <label for="number">Número de tarjeta</label>
+                  <input type="text" name="number" id="number" class="form-control" placeholder="Número" required>
+                </div>
+                <div class="form-group col-md-3 pl-2">
+                  <label for="expiry">Vencimiento</label>
+                  <input type="text" name="expiry" id="expiry" class="form-control" placeholder="Vencimiento" required>
+                </div>
+                <div class="form-group col-md-9 pr-2">
+                  <label for="name">Nombre y apellido</label>
+                  <input type="text" name="name" id="name" class="form-control" placeholder="Nombre y apellido" required>
+                </div>
+                <div class="form-group col-md-3 pl-2">
+                  <label for="cvc">CVC</label>
+                  <input type="text" name="cvc" id="cvc" class="form-control" placeholder="CVC" required>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 card-wrapper my-3"></div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-confirm-payment">Comprar</button>
+            </div>
+          </form>
+        <?php } else { ?>
+          <form action="<?php echo FRONT_ROOT ?>/User/ShowLoginView" id="form-payment" class="row payment-info mt-3 m-0">
+            <div class="col-12">
+              <h3 class="mt-3 mb-0">Datos de compra</h3>
+              <hr class="my-2">
+              <h5 class="mb-2">Debes iniciar sesión para realizar la reserva</h5>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-confirm-payment">Iniciar sesión</button>
+            </div>
+          </form>
+        <?php } ?>
       <?php } else { ?>
-        <form action="<?php echo FRONT_ROOT ?>/User/ShowLoginView" id="form-payment" class="row payment-info mt-3 m-0">
-          <div class="col-12">
-            <h3 class="mt-3 mb-0">Datos de compra</h3>
-            <hr class="my-2">
-            <h5 class="mb-2">Debes iniciar sesión para realizar la reserva</h5>
-          </div>
-          <div class="col-12">
-            <button type="submit" class="btn btn-confirm-payment">Iniciar sesión</button>
-          </div>
-        </form>
+        <div class="row payment-info mt-3 m-0">
+          <h3 class="my-3 w-100 text-center">Entradas agotadas</h3>
+        </div>
       <?php } ?>
     </div>
   </div>
@@ -115,6 +121,10 @@
 <script>
   $('#form-payment').card({
     container: '.card-wrapper'
+  });
+
+  $('#quantity').change(() => {
+    $('#total-price').html('$' + $('#quantity').val() * <?php echo $show->getPrice(); ?>);
   });
 
   $('#quantity').keyup(() => {
