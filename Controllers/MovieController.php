@@ -5,14 +5,18 @@ namespace Controllers;
 use DAO\Database\Response as Response;
 use DAO\MovieDAO as MovieDAO;
 use Models\Movie as Movie;
+use DAO\ShowDAO as ShowDAO;
+use Models\Show as Show;
 
 class MovieController
 {
   private $movieDAO;
+  private $showDAO;
 
   public function __construct()
   {
     $this->movieDAO = new MovieDAO();
+    $this->showDAO = new ShowDAO();
   }
 
   /* VIEW METHODS */
@@ -40,8 +44,10 @@ class MovieController
       $movies = $this->movieDAO->getMoviesOnLocalDB();
       require_once(VIEWS_PATH . "/Movie/list.php");
     } else {
-      return header('Location: ' . FRONT_ROOT);
+      $movies = $this->getActiveMovies();
+      require_once(VIEWS_PATH . "/Movie/userList.php");
     }
+    
   }
 
   /* CONTROLLER METHODS */
@@ -139,5 +145,18 @@ class MovieController
       array_push($responses, new Response(false, "No se encontraron películas con los filtros deseados."));
       $this->ShowSearchView($responses);
     }
+  }
+
+  private function getActiveMovies() {
+    $movies = $this->movieDAO->getMoviesOnLocalDB();
+    $activeMovies = array();
+
+    foreach($movies as $movie) {
+      if(!empty($this->showDAO->GetByMovie($movie->getId()))) {
+        array_push($activeMovies, $movie);
+      }
+    }
+
+    return $activeMovies;
   }
 }

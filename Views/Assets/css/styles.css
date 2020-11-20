@@ -181,6 +181,9 @@ hr {
   background-color: #3b3b3ba6;
   padding-top: 0.5rem;
 }
+.table:hover{
+  background-color: #686666a6;
+}
 .table-container {
   background: #f9f9f9;
   border: 1px solid #c3c3c3;
