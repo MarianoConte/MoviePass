@@ -182,6 +182,14 @@ class ShowController
       array_push($validationResponses, new Response(false, "La sala seleccionada se encuentra ocupada en el horario definido."));
     }
 
+    $date =  date_create($show->getDate());
+    $now = date("Y-m-d H:i:s");
+    $actual_date = date_create(date('Y-m-d H:m:s', strtotime('+20 hour', strtotime($now))));
+
+    if($date < $actual_date)
+      array_push($validationResponses, new Response(false, "La fecha y la hora debe ser al menos 24 horas superior a la fecha actual."));
+
+
     return $validationResponses;
   }
 }
