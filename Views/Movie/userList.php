@@ -11,7 +11,7 @@
               <input type="hidden" name="movie_id" value="<?php echo $movie->getId() ?>">
             </form>
             <div class="container-fluid movie-details py-3" onclick="document.getElementById('form-movie-<?php echo $movie->getId() ?>').submit()">
-              <div class="container table py-3">
+              <div class="container table-btn py-3">
                 <div class="row">
                   <div class="col-md-3 movie-details-image">
                     <img src="<?php echo $movie->getImage(); ?>" alt="">
