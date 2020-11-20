@@ -145,6 +145,24 @@ class ShowDAO implements IShowDAO
     return $dbAvailableTickets;
   }
 
+  public function CheckIfMovieIsInOtherTheater($movie_id, $theater_id, $date){
+    $sql = "SELECT count(*) quantity FROM functions f WHERE f.movie_id = $movie_id and f.theater_id <> $theater_id 
+    and DATE_FORMAT(f.date,'%d/%m/%Y') = DATE_FORMAT('$date', '%d/%m/%Y') ";
+    
+    $result = $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
+
+    return $result;
+  }
+
+  public function CheckIfMovieIsInOtherRoom($movie_id, $theater_id, $room_id, $date){
+    $sql = "SELECT count(*) quantity FROM functions f WHERE f.movie_id = $movie_id and f.theater_id = $theater_id and f.theater_room_id <> $room_id 
+    and DATE_FORMAT(f.date,'%d/%m/%Y') = DATE_FORMAT('$date', '%d/%m/%Y') ";
+
+    $result = $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
+
+    return $result;
+  }
+
   public function CheckShowHour($theater, $room, $date, $duration, $show_id = null)
   {
     $sql = "SELECT count(*) quantity FROM functions f inner join movies m on f.movie_id = m.id WHERE theater_id = $theater and theater_room_id = $room and 

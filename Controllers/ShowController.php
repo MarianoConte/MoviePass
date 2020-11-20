@@ -182,6 +182,18 @@ class ShowController
       array_push($validationResponses, new Response(false, "La sala seleccionada se encuentra ocupada en el horario definido."));
     }
 
+    $checker = $this->showDAO->CheckIfMovieIsInOtherTheater($show->getMovie()->getId(), $show->getTheater()->getId(), $show->getDate());
+    
+    if($checker > 0){
+      array_push($validationResponses, new Response(false, "No se permite crear una función con una película que ya tiene función para ese día en otro cine."));
+    }
+
+    $checker = $this->showDAO->CheckIfMovieIsInOtherRoom($show->getMovie()->getId(), $show->getTheater()->getId(), $show->getRoom()->getId(), $show->getDate());
+    if($checker > 0){
+      array_push($validationResponses, new Response(false, "No se permite crear una función con una película que ya tiene función para ese día en otra sala del cine."));
+    }
+
+
     $date =  date_create($show->getDate());
     $now = date("Y-m-d H:i:s");
     $actual_date = date_create(date('Y-m-d H:m:s', strtotime('+20 hour', strtotime($now))));

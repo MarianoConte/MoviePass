@@ -14,4 +14,6 @@ interface IShowDAO
     function Add(Show $show);
     function Edit(Show $show);
     function Delete($show_id);
+    function CheckIfMovieIsInOtherRoom($movie_id, $theater_id, $room_id, $date);
+    function CheckIfMovieIsInOtherTheater($movie_id, $theater_id, $date);
 }
