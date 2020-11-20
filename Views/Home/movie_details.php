@@ -25,7 +25,7 @@
         <div class="col-12 movie-details-shows">
           <h2 class="text-center">Proximas funciones</h2>
           <hr>
-          <div class="row">
+          <div class="row px-2 pb-2">
             <?php foreach($shows as $show) { ?>
               <div class="col-md-6 p-2 mx-auto">
                 <div class="movie-details-show">
@@ -35,7 +35,7 @@
                         Cine: <?php echo $show->getTheater()->getName(); ?>
                       </h3>
                       <h5 class="movie-details-show-desc">
-                        Fecha y horario: <?php echo date("d/m/Y H:i:s", strtotime($show->getDate())); ?>
+                        Fecha y horario: <?php echo date("d/m/Y H:i", strtotime($show->getDate())); ?>
                       </h5>
                       <h5 class="movie-details-show-desc">
                         Dirección: <?php echo $show->getTheater()->getAddress(); ?>
@@ -47,8 +47,11 @@
                         Asientos: <?php echo $show->getRoom()->getSeats (); ?>
                       </h5>
                     </div>
-                    <div class="col-md-3 movie-details-show-buy">
+                    <div class="col-md-3 movie-details-show-buy" onclick="document.getElementById('form-show-<?php echo $show->getId() ?>').submit()">
                       <div class="movie-details-show-buy-text text-center">
+                        <form action="<?php echo FRONT_ROOT ?>/Home/ShowBuyTickets" method="POST" id="form-show-<?php echo $show->getId() ?>">
+                          <input type="hidden" name="show_id" value="<?php echo $show->getId() ?>">
+                        </form>
                         Reservar<br>asiento
                         <hr class="my-2">
                         <span>$<?php echo $show->getPrice(); ?></span>

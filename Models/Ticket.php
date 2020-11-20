@@ -1,68 +1,86 @@
-<?php namespace Models;
-  Class Ticket{
-    private $funcion;
-    private $client;
-    private $id;
+<?php
 
-    /**
-     * Get the value of funcion
-     */ 
-    public function getFuncion()
-    {
-        return $this->funcion;
-    }
+namespace Models;
 
-    /**
-     * Set the value of funcion
-     *
-     * @return  self
-     */ 
-    public function setFuncion($funcion)
-    {
-        $this->funcion = $funcion;
+class Ticket
+{
+  private $id;
+  private $token;
+  private $user;
+  private $show;
+  private $date;
 
-        return $this;
-    }
-
-    /**
-     * Get the value of client
-     */ 
-    public function getClient()
-    {
-        return $this->client;
-    }
-
-    /**
-     * Set the value of client
-     *
-     * @return  self
-     */ 
-    public function setClient($client)
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
-    /**
-     * Get the value of id
-     */ 
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set the value of id
-     *
-     * @return  self
-     */ 
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
+  public function __construct(
+    $id = null,
+    $token = null,
+    $user = null,
+    $show = null,
+    $date = null
+  ) {
+    $this->id = $id;
+    $this->token = $token;
+    $this->user = $user;
+    $this->show = $show;
+    $this->date = $date;
   }
 
-?>
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id)
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  public function getToken()
+  {
+    return $this->token;
+  }
+
+  public function setToken($token)
+  {
+    $this->token = $token;
+
+    return $this;
+  }
+
+  public function getUser()
+  {
+    return $this->user;
+  }
+
+  public function setUser($user)
+  {
+    $this->user = $user;
+
+    return $this;
+  }
+
+  public function getShow()
+  {
+    return $this->show;
+  }
+
+  public function setShow($show)
+  {
+    $this->show = $show;
+
+    return $this;
+  }
+  
+  public function getDate()
+  {
+    return $this->date;
+  }
+
+  public function setDate($date)
+  {
+    $this->date = $date;
+
+    return $this;
+  }
+}

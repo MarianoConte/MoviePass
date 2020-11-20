@@ -59,6 +59,9 @@
             <!-- Menu cliente -->
           <?php } else if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'CUSTOMER') { ?>
             <li class="nav-item">
+              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Home/ShowUserTickets">Historial de compras</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="<?php echo FRONT_ROOT ?>/User/Logout">Cerrar sesión</a>
             </li>
             <!-- Menu anonimo -->

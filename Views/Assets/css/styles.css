@@ -24,6 +24,7 @@ hr {
 }
 
 /* INDEX */
+
 .index-carousel-ads {
   background: #ffffff17;
 }
@@ -51,6 +52,10 @@ hr {
 }
 
 /* MOVIE DETAILS */
+
+.movie-details hr {
+  border-color: #8c8c8c;
+}
 .movie-details .movie-details-image img  {
   width: 100%;
 }
@@ -110,13 +115,72 @@ hr {
   font-size: 1.75rem;
 }
 
-.table{
-  background-color: #3b3b3ba6;
-  padding-top: 10px;
+/* BUY TICKETS */
+
+.buy-tickets h1 {
+  margin: 0;
+  color: #fafafa;
+}
+.buy-tickets h3 {
+  margin: 0;
+  color: #fafafa;
+}
+.buy-tickets hr {
+  border-color: #8c8c8c;
+}
+.card-movie-details {
+  background: #ffffff12;
+  color: #fafafa;
+  padding: 1rem;
+}
+.payment-info {
+  background: #ffffff12;
+  color: #fafafa;
+}
+.payment-info .tickets-quantity {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.payment-info .tickets-quantity label {
+  font-size: 1.5rem;
+}
+.payment-info .tickets-quantity .tickets-total-price {
+  font-weight: 500;
+}
+.payment-info .card-details {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.btn-confirm-payment {
+  font-size: 1rem;
+  margin: 0 -16px;
+  width: calc(100% + 32px);
+  border-radius: 0;
+  padding: 0.25rem;
+  background: #ad9700;
+  border-color: #ad9700;
+  transition: 0.3s;
+}
+.btn-confirm-payment:hover {
+  background: #bfa700;
+  border-color: #bfa700;
+}
+.btn-confirm-payment:active,.btn-confirm-payment:focus {
+  background: #ad9700 !important;
+  border-color: #ad9700 !important;
 }
 
 /* GENERAL */
 
+#qr-token img {
+  margin: auto;
+}
+.table {
+  background-color: #3b3b3ba6;
+  padding-top: 0.5rem;
+}
 .table-container {
   background: #f9f9f9;
   border: 1px solid #c3c3c3;
