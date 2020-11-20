@@ -79,12 +79,17 @@ class HomeController {
       $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
 
       for($i = 0; $i < $_POST['quantity'] && !$error; $i++) {
-        if(!$this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id'])))
+        $ticket = new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id']);
+        if(!$this->ticketDAO->Add($ticket))
           $error = true;
       }
 
       if(!$error) {
         array_push($responses, new Response(true, "Entradas compradas exitosamente."));
+        
+        // enviar al mail
+        $this->sendMail($_SESSION['user']->getEmail(), $ticket);
+
         $this->ShowUserTickets($responses);
       }
       else {
@@ -107,5 +112,9 @@ class HomeController {
     }
 
     return array_slice($activeMovies, 0, 4);
+  }
+
+  private function sendMail($email, $ticket){
+    //mail($email, 'titulo', 'holamundo');
   }
 }

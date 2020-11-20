@@ -150,9 +150,10 @@ class ShowController
     $this->ShowEditView($_POST['show_id'], $responses);
   }
 
-  public function Delete($show_id, $responses = []){
+  public function Delete($show_id, $responses = [])
+  {
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
-    return header('Location: ' . FRONT_ROOT);
+      return header('Location: ' . FRONT_ROOT);
 
     $query = $this->showDAO->Delete($show_id);
 
@@ -186,13 +187,13 @@ class ShowController
     }
 
     $checker = $this->showDAO->CheckIfMovieIsInOtherTheater($show->getMovie()->getId(), $show->getTheater()->getId(), $show->getDate());
-    
-    if($checker > 0){
+
+    if ($checker > 0) {
       array_push($validationResponses, new Response(false, "No se permite crear una función con una película que ya tiene función para ese día en otro cine."));
     }
 
     $checker = $this->showDAO->CheckIfMovieIsInOtherRoom($show->getMovie()->getId(), $show->getTheater()->getId(), $show->getRoom()->getId(), $show->getDate());
-    if($checker > 0){
+    if ($checker > 0) {
       array_push($validationResponses, new Response(false, "No se permite crear una función con una película que ya tiene función para ese día en otra sala del cine."));
     }
 
@@ -201,19 +202,20 @@ class ShowController
     $now = date("Y-m-d H:i:s");
     $actual_date = date_create(date('Y-m-d H:m:s', strtotime('+20 hour', strtotime($now))));
 
-    if($date < $actual_date)
+    if ($date < $actual_date)
       array_push($validationResponses, new Response(false, "La fecha y la hora debe ser al menos 24 horas superior a la fecha actual."));
 
 
     return $validationResponses;
   }
 
-  private function hideOldShows($data){
-    $shows = array_filter($data, function($show){
+  private function hideOldShows($data)
+  {
+    $shows = array_filter($data, function ($show) {
       date_default_timezone_set(TIME_ZONE);
       $showDate = date("d/m/Y H:i", strtotime($show->getDate()));
-      $currentDate = date("d/m/Y H:i",time());
-      return ($currentDate > $showDate) ? false : true; 
+      $currentDate = date("d/m/Y H:i", time());
+      return ($currentDate > $showDate) ? false : true;
     });
     return $shows;
   }
