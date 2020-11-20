@@ -74,4 +74,13 @@ class TicketDAO implements ITicketDAO
 
     return $this->db->getConnection()->query($sql);
   }
+
+  public function CountTicketsFromFunction($function_id){
+    $sql = "SELECT COUNT(*) quantity FROM tickets t WHERE function_id = $function_id";
+
+    $result = $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
+
+    return $result;
+  }
+
 }

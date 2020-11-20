@@ -177,4 +177,27 @@ class ShowDAO implements IShowDAO
 
     return $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
   }
+
+  public function GetFunctionFromData($movie_id, $theater_id, $date){
+    $show = null;
+    $dbShow = null;
+
+    $sql = "SELECT * FROM functions f WHERE f.movie_id='{$movie_id}' and f.theater_id = '$theater_id' and f.date = '$date' LIMIT 1";
+    $result = $this->db->getConnection()->query($sql);
+
+    if ($result->num_rows > 0) {
+      $dbShow = $result->fetch_assoc();
+      $show = new Show(
+        $dbShow['id'],
+        $dbShow['movie_id'],
+        $dbShow['theater_id'],
+        $dbShow['theater_room_id'],
+        $dbShow['price'],
+        $dbShow['date'],
+        $this->GetAvailableTickets($dbShow['id'])
+      );
+    }
+
+    return $show;
+  }
 }

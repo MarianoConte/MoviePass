@@ -99,4 +99,32 @@ class MovieDAO implements IMovieDAO
 
     return $movie;
   }
+
+  function getAllMoviesByShows(){
+    
+    $movies = array();
+
+    $sql = "SELECT DISTINCT m.id, m.name FROM movies m INNER JOIN functions f  WHERE  m.id = f.movie_id";
+
+    $result = $this->db->getConnection()->query($sql);
+   
+    if ($result->num_rows > 0) {
+      while ($dbMovie = $result->fetch_assoc()) {
+        array_push(
+          $movies,
+          new Movie(
+            $dbMovie['id'],
+            null,
+            $dbMovie['name'],
+            null,
+            null,
+            null,
+            null
+          )
+        );
+      }
+    }
+
+    return $movies;
+  }
 }

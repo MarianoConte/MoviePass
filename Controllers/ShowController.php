@@ -7,6 +7,7 @@ use DAO\ShowDAO as ShowDAO;
 use DAO\TheaterDAO as TheaterDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\MovieDAO as MovieDAO;
+use DAO\TicketDAO as TicketDAO;
 use Models\Show as Show;
 
 class ShowController
@@ -15,6 +16,7 @@ class ShowController
   private $theaterDAO;
   private $roomDAO;
   private $movieDAO;
+  private $ticketDAO;
 
   public function __construct()
   {
@@ -22,6 +24,7 @@ class ShowController
     $this->theaterDAO = new TheaterDAO();
     $this->roomDAO = new RoomDAO();
     $this->movieDAO = new MovieDAO();
+    $this->ticketDAO = new TicketDAO();
   }
 
   /* VIEW METHODS */
@@ -101,6 +104,31 @@ class ShowController
 
     require_once(VIEWS_PATH . "/Show/edit.php");
   }
+
+  public function ShowTicketsSelledView($responses = []){
+
+    if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+    return header('Location: ' . FRONT_ROOT);
+
+    $movies = array();
+    $movies = $this->movieDAO->getAllMoviesByShows();
+
+    $showsN = array();
+    $showsN = $this->showDAO->GetAll();
+    $shows = array();
+
+    foreach($showsN as $show){
+      $show = $this->showDAO->GetById($show->getId());
+
+      $show->setTheater($this->theaterDAO->GetById($show->getTheater()));
+      $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
+      array_push($shows, $show);
+    }
+
+    require_once(VIEWS_PATH . "/Show/tickets.php");
+  }
+
+
 
   /* ACTION METHODS */
 
@@ -218,5 +246,23 @@ class ShowController
       return ($currentDate > $showDate) ? false : true;
     });
     return $shows;
+  }
+
+
+  public function GetTicketsSelled(){
+
+    $validationResponses = [];
+
+    $show = $this->showDAO->GetFunctionFromData($_POST['movie'], $_POST['theater'], $_POST['schedule']);
+
+    $selledTickets = $this->ticketDAO->CountTicketsFromFunction($show->getId());
+
+    $notSelledTickets = $this->showDAO->GetAvailableTickets($show->getId());
+
+    array_push($validationResponses, new Response(true, "Los tickets vendidos fueron: ".$selledTickets));
+    array_push($validationResponses, new Response(false, "Los tickets no vendidos fueron: ".$notSelledTickets));
+
+    $this->ShowTicketsSelledView($validationResponses);
+     
   }
 }

@@ -8,4 +8,5 @@ interface ITicketDAO
 {
   function GetByUserId($userId);
   function Add(Ticket $theater);
+  function CountTicketsFromFunction($function_id);
 }

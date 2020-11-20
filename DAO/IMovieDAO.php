@@ -12,4 +12,5 @@ interface IMovieDAO
   function addMovie(Movie $movie);
   function getMoviesOnLocalDB();
   function getMovieOnLocalDBById($movie_id);
+  function getAllMoviesByShows();
 }
