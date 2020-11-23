@@ -125,9 +125,12 @@ class TicketDAO implements ITicketDAO
   public function Add(Ticket $ticket)
   {
     $sql = "INSERT INTO tickets(token, user_id, function_id)
-    SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}' FROM tickets";
+            SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}' FROM tickets;";
 
-    return $this->db->getConnection()->query($sql);
+    if($this->db->getConnection()->query($sql))
+      return $this->db->getConnection()->insert_id;
+    else
+      return false;
   }
 
   public function CountTicketsFromFunction($function_id)

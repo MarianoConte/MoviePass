@@ -1,4 +1,5 @@
 <?php
+
 namespace Controllers;
 
 use DAO\Database\Response;
@@ -10,7 +11,18 @@ use DAO\MovieDAO as MovieDAO;
 
 use Models\Ticket as Ticket;
 
-class HomeController {
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+use QRcode;
+
+require 'vendor/phpqrcode/phpqrcode.php';
+require 'vendor/PHPMailer/PHPMailer.php';
+require 'vendor/PHPMailer/SMTP.php';
+require 'vendor/PHPMailer/Exception.php';
+require 'vendor/PHPMailer/OAuth.php';
+
+class HomeController
+{
   private $ticketDAO;
   private $showDAO;
   private $theaterDAO;
@@ -31,45 +43,49 @@ class HomeController {
   public function index($message = "")
   {
     $movies = $this->getActiveMovies();
-    require_once(VIEWS_PATH."/Home/index.php");
+    require_once(VIEWS_PATH . "/Home/index.php");
   }
 
-  public function ShowMovieDetails($movie_id) {
+  public function ShowMovieDetails($movie_id)
+  {
     $movie = $this->movieDAO->getMovieOnLocalDBById($movie_id);
 
     $data = $this->showDAO->GetByMovie($movie_id);
 
-    $shows = array_filter($data, function($show){
+    $shows = array_filter($data, function ($show) {
       date_default_timezone_set(TIME_ZONE);
       $showDate = date("d/m/Y H:i", strtotime($show->getDate()));
-      $currentDate = date("d/m/Y H:i",time());
-      return ($currentDate > $showDate) ? false : true; 
+      $currentDate = date("d/m/Y H:i", time());
+      return ($currentDate > $showDate) ? false : true;
     });
-    require_once(VIEWS_PATH."/Home/movie_details.php");
+    require_once(VIEWS_PATH . "/Home/movie_details.php");
   }
 
-  public function ShowBuyTickets($show_id, $responses = []) {
+  public function ShowBuyTickets($show_id, $responses = [])
+  {
     $show = $this->showDAO->GetById($show_id);
     $show->setTheater($this->theaterDAO->GetById($show->getTheater()));
     $show->setRoom($this->roomDAO->GetById($show->getRoom()));
     $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
 
-    require_once(VIEWS_PATH."/Home/buy_tickets.php");
+    require_once(VIEWS_PATH . "/Home/buy_tickets.php");
   }
 
-  public function ShowUserTickets($responses = []) {
+  public function ShowUserTickets($responses = [])
+  {
     if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'CUSTOMER') {
       $tickets = $this->ticketDAO->GetByUserId($_SESSION['user']->getId());
-      require_once(VIEWS_PATH."/Home/user_tickets.php");
+      require_once(VIEWS_PATH . "/Home/user_tickets.php");
     } else {
       return header('Location: ' . FRONT_ROOT);
     }
   }
 
-  public function ShowSalesView(){
+  public function ShowSalesView()
+  {
     $responses = [];
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
-    return header('Location: ' . FRONT_ROOT);
+      return header('Location: ' . FRONT_ROOT);
 
     $theaters = $this->theaterDAO->GetAll();
     $movies = $this->movieDAO->getMoviesOnLocalDB();
@@ -79,74 +95,109 @@ class HomeController {
 
   /* CONTROLLER METHODS */
 
-  public function SearchSales(){
+  public function SearchSales()
+  {
     $movie = ($_POST['movie']) ? $_POST['movie'] : '';
     $theater = ($_POST['theater']) ? $_POST['theater'] : '';
     $desde = ($_POST['dateFrom']) ? $_POST['dateFrom'] : null;
     $hasta = ($_POST['dateTo']) ? $_POST['dateTo'] : null;
-    
+
     $tickets = array();
 
-    if($movie != ''){
-      if($theater!=''){
+    if ($movie != '') {
+      if ($theater != '') {
         $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
-      }else{
+      } else {
         $tickets = $this->ticketDAO->GetByMovie($movie, $desde, $hasta);
       }
-    }else if($theater != ''){
+    } else if ($theater != '') {
       $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
-    }else{
+    } else {
       $tickets = $this->ticketDAO->GetAll($desde, $hasta);
     }
   }
-
-  public function BuyTickets() {
+  public function BuyTickets()
+  {
     $responses = [];
     $error = false;
 
-    if(isset($_POST['show_id']) && isset($_POST['quantity']) && $_POST['quantity'] > 0) {
+    if (isset($_POST['show_id']) && isset($_POST['quantity']) && $_POST['quantity'] > 0) {
       $show = $this->showDAO->GetById($_POST['show_id']);
       $show->setTheater($this->theaterDAO->GetById($show->getTheater()));
       $show->setRoom($this->roomDAO->GetById($show->getRoom()));
       $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
 
-      for($i = 0; $i < $_POST['quantity'] && !$error; $i++) {
-        $ticket = new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id']);
-        if(!$this->ticketDAO->Add($ticket))
+      for ($i = 0; $i < $_POST['quantity'] && !$error; $i++) {
+        $newTicketId = $this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id']));
+
+        if ($newTicketId) {
+          $this->SendEmail($_SESSION['user']->getEmail(), md5($newTicketId), $show);
+        } else {
           $error = true;
+        }
       }
 
-      if(!$error) {
+      if (!$error) {
         array_push($responses, new Response(true, "Entradas compradas exitosamente."));
-        
-        // enviar al mail
-        $this->sendMail($_SESSION['user']->getEmail(), $ticket);
-
         $this->ShowUserTickets($responses);
-      }
-      else {
+      } else {
         array_push($responses, new Response(false, "Error al comprar entradas."));
         $this->ShowBuyTickets($_POST['show_id'], $responses);
       }
     }
   }
 
+  private function SendEmail($email, $token, $show)
+  {
+    QRcode::png($token, 'Views/Assets/img/qr_temp/' . $token . '.png', QR_ECLEVEL_L, 10);
+    $tokenQRCode = 'data:image/png;base64,' . base64_encode(file_get_contents('Views/Assets/img/qr_temp/' . $token . '.png'));
+    $mail = new PHPMailer(true);
+    try {
+      //Server settings
+      $mail->SMTPDebug = 0;
+      $mail->isSMTP();
+      $mail->Host = 'smtp.gmail.com';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'usuario@gmail.com';
+      $mail->Password = 'password';
+      $mail->SMTPSecure = 'ssl';
+      $mail->Port = 465;
+
+      // Recipients
+      $mail->setFrom('usuario@gmail.com', "MoviePass");
+      $mail->addAddress($email, 'Contacto');
+      // Content
+      $mail->isHTML(true);
+      $mail->Subject = "MoviePass - Reserva de asiento";
+      $mail->Body = "<h4>Película: " . $show->getMovie()->getName() . "<h4>
+      <h4>Cine: " . $show->getTheater()->getName() . "</h4>
+      <h4>Fecha y horario: " . date("d/m/Y H:i", strtotime($show->getDate())) . "</h4>
+      <h4>Dirección: " . $show->getTheater()->getAddress() . "</h4>
+      <h4>Sala: " . $show->getRoom()->getName() . "</h4>";
+      $mail->addAttachment('Views/Assets/img/qr_temp/' . $token . '.png', 'new.png');
+
+      if ($mail->send())
+        return true;
+      else
+        return false;
+    } catch (Exception $e) {
+      return false;
+    }
+  }
+
   /* HELPERS */
-  
-  private function getActiveMovies() {
+
+  private function getActiveMovies()
+  {
     $movies = $this->movieDAO->getMoviesOnLocalDB();
     $activeMovies = array();
 
-    foreach($movies as $movie) {
-      if(!empty($this->showDAO->GetByMovie($movie->getId()))) {
+    foreach ($movies as $movie) {
+      if (!empty($this->showDAO->GetByMovie($movie->getId()))) {
         array_push($activeMovies, $movie);
       }
     }
 
     return array_slice($activeMovies, 0, 4);
-  }
-
-  private function sendMail($email, $ticket){
-    //mail($email, 'titulo', 'holamundo');
   }
 }

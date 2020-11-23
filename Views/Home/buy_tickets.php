@@ -40,7 +40,7 @@
               Sala: <?php echo $show->getRoom()->getName(); ?>
             </h5>
             <h5>
-              Asientos: <?php echo $show->getRoom()->getSeats (); ?>
+              Asientos: <?php echo $show->getRoom()->getSeats(); ?>
             </h5>
           </div>
         </div>
