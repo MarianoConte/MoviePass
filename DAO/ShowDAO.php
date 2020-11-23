@@ -27,7 +27,8 @@ class ShowDAO implements IShowDAO
             FROM functions f 
             inner join theaters t on f.theater_id = t.id 
             inner join movies m on f.movie_id = m.id
-            inner join theater_rooms r on f.theater_room_id = r.id";
+            inner join theater_rooms r on f.theater_room_id = r.id
+            WHERE f.date >= NOW()";
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
@@ -60,7 +61,7 @@ class ShowDAO implements IShowDAO
             FROM functions f
             INNER JOIN theaters t on f.theater_id = t.id
             INNER JOIN theater_rooms r on f.theater_room_id = r.id
-            WHERE f.movie_id = $movie_id AND t.state = 1
+            WHERE f.movie_id = $movie_id AND t.state = 1 AND f.date >= NOW()
             ORDER BY f.date ASC";
     $result = $this->db->getConnection()->query($sql);
 

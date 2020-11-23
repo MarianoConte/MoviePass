@@ -34,9 +34,7 @@ class ShowController
     $shows = array();
 
     if ($_SESSION['user'] && $_SESSION['user']->getRole() == 'ADMIN') {
-      $data = $this->showDAO->GetAll();
-
-      $shows = $this->hideOldShows($data);
+      $shows = $this->showDAO->GetAll();
 
       require_once(VIEWS_PATH . "/Show/list.php");
     } else {
@@ -234,18 +232,6 @@ class ShowController
 
     return $validationResponses;
   }
-
-  private function hideOldShows($data)
-  {
-    $shows = array_filter($data, function ($show) {
-      date_default_timezone_set(TIME_ZONE);
-      $showDate = date("d/m/Y H:i", strtotime($show->getDate()));
-      $currentDate = date("d/m/Y H:i", time());
-      return ($currentDate > $showDate) ? false : true;
-    });
-    return $shows;
-  }
-
 
   public function GetTicketsSelled(){
 
