@@ -66,7 +66,39 @@ class HomeController {
     }
   }
 
+  public function ShowSalesView(){
+    $responses = [];
+    if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
+    return header('Location: ' . FRONT_ROOT);
+
+    $theaters = $this->theaterDAO->GetAll();
+    $movies = $this->movieDAO->getMoviesOnLocalDB();
+    $tickets = $this->ticketDAO->GetAll();
+    require_once(VIEWS_PATH . '/Home/sales.php');
+  }
+
   /* CONTROLLER METHODS */
+
+  public function SearchSales(){
+    $movie = ($_POST['movie']) ? $_POST['movie'] : '';
+    $theater = ($_POST['theater']) ? $_POST['theater'] : '';
+    $desde = ($_POST['dateFrom']) ? $_POST['dateFrom'] : null;
+    $hasta = ($_POST['dateTo']) ? $_POST['dateTo'] : null;
+    
+    $tickets = array();
+
+    if($movie != ''){
+      if($theater!=''){
+        $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
+      }else{
+        $tickets = $this->ticketDAO->GetByMovie($movie, $desde, $hasta);
+      }
+    }else if($theater != ''){
+      $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
+    }else{
+      $tickets = $this->ticketDAO->GetAll($desde, $hasta);
+    }
+  }
 
   public function BuyTickets() {
     $responses = [];

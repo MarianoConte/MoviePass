@@ -22,10 +22,36 @@ class TicketDAO implements ITicketDAO
     $this->showDAO = new ShowDAO();
   }
 
+  public function GetAll($from = null, $to = null)
+  {
+    $sql = "SELECT 
+    ticket.id as id, ticket.token as token, ticket.date as date,
+    f.id as function_id, f.price as function_price, f.date as function_date,
+    t.name as theater_name, t.address as theater_address,
+    r.name as theater_room_name, r.seats as theater_room_seats,
+    m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
+    FROM tickets ticket
+    INNER JOIN functions f on ticket.function_id = f.id
+    INNER JOIN theaters t on f.theater_id = t.id
+    INNER JOIN theater_rooms r on f.theater_room_id = r.id
+    INNER JOIN movies m on f.movie_id = m.id";
+
+    if (!$from) {
+      if ($to) { //hasta
+
+      }
+    } else if (!$to) { // desde
+
+    } else { //desde y hasta
+    }
+
+    $sql.=" ORDER BY ticket.id DESC";
+
+    return $this->GetByQuery($sql);
+  }
+
   public function GetByUserId($userId)
   {
-    $tickets = array();
-
     $sql = "SELECT
             ticket.id as id, ticket.token as token, ticket.date as date,
             f.id as function_id, f.price as function_price, f.date as function_date,
@@ -37,9 +63,85 @@ class TicketDAO implements ITicketDAO
             INNER JOIN theaters t on f.theater_id = t.id
             INNER JOIN theater_rooms r on f.theater_room_id = r.id
             INNER JOIN movies m on f.movie_id = m.id
-            WHERE ticket.user_id = $userId
-            ORDER BY ticket.id DESC";
+            WHERE ticket.user_id = $userId ORDER BY ticket.id DESC";
 
+    return $this->GetByQuery($sql);
+  }
+
+  public function GetByTheater($theater, $from = null, $to = null)
+  {
+    $sql = 'SELECT
+    ticket.id as id, ticket.token as token, ticket.date as date,
+    f.id as function_id, f.price as function_price, f.date as function_date,
+    t.name as theater_name, t.address as theater_address,
+    r.name as theater_room_name, r.seats as theater_room_seats,
+    m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
+    FROM tickets ticket
+    INNER JOIN functions f on ticket.function_id = f.id
+    INNER JOIN theaters t on f.theater_id = t.id
+    INNER JOIN theater_rooms r on f.theater_room_id = r.id
+    INNER JOIN movies m on f.movie_id = m.id
+    WHERE t.id = $theater';
+    if (!$from) {
+      if ($to) { //hasta
+
+      }
+    } else if (!$to) { // desde
+
+    } else { //desde y hasta
+    }
+
+    $sql.=" ORDER BY ticket.id DESC";
+    return $this->GetByQuery($sql);
+  }
+
+  public function GetByMovie($movie, $from = null, $to = null)
+  {
+    $sql = 'SELECT
+    ticket.id as id, ticket.token as token, ticket.date as date,
+    f.id as function_id, f.price as function_price, f.date as function_date,
+    t.name as theater_name, t.address as theater_address,
+    r.name as theater_room_name, r.seats as theater_room_seats,
+    m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
+    FROM tickets ticket
+    INNER JOIN functions f on ticket.function_id = f.id
+    INNER JOIN theaters t on f.theater_id = t.id
+    INNER JOIN theater_rooms r on f.theater_room_id = r.id
+    INNER JOIN movies m on f.movie_id = m.id
+    WHERE m.id = $movie';
+    if (!$from) {
+      if ($to) { //hasta
+
+      }
+    } else if (!$to) { // desde
+
+    } else { //desde y hasta
+    }
+
+    $sql.=" ORDER BY ticket.id DESC";
+    return $this->GetByQuery($sql);
+  }
+
+  public function Add(Ticket $ticket)
+  {
+    $sql = "INSERT INTO tickets(token, user_id, function_id)
+    SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}' FROM tickets";
+
+    return $this->db->getConnection()->query($sql);
+  }
+
+  public function CountTicketsFromFunction($function_id)
+  {
+    $sql = "SELECT COUNT(*) quantity FROM tickets t WHERE function_id = $function_id";
+
+    $result = $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
+
+    return $result;
+  }
+
+  private function GetByQuery($sql)
+  {
+    $tickets = array();
     $result = $this->db->getConnection()->query($sql);
 
     if ($result->num_rows > 0) {
@@ -66,21 +168,4 @@ class TicketDAO implements ITicketDAO
 
     return $tickets;
   }
-
-  public function Add(Ticket $ticket)
-  {
-    $sql = "INSERT INTO tickets(token, user_id, function_id)
-    SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}' FROM tickets";
-
-    return $this->db->getConnection()->query($sql);
-  }
-
-  public function CountTicketsFromFunction($function_id){
-    $sql = "SELECT COUNT(*) quantity FROM tickets t WHERE function_id = $function_id";
-
-    $result = $this->db->getConnection()->query($sql)->fetch_assoc()['quantity'];
-
-    return $result;
-  }
-
 }

@@ -44,18 +44,19 @@
           <a class="navbar-brand" href="<?php echo FRONT_ROOT ?>">MoviePass</a>
           <!-- Menu administrador -->
           <?php if (isset($_SESSION['user']) && $_SESSION['user']->getRole() == 'ADMIN') { ?>
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Theater/ShowListView">Administrar cines</a>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Administrar
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>/Theater/ShowListView">Cines</a>
+                <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>/Show/ShowListView">Funciones</a>
+                <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>/Movie/ShowListView">Películas</a>
+                <a class="dropdown-item" href="<?php echo FRONT_ROOT ?>/Discount/ShowListView">Descuentos</a>
+              </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Show/ShowListView">Administrar funciones</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Movie/ShowListView">Administrar películas</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Discount/ShowListView">Administrar
-                descuentos</a>
+              <a class="nav-link" href="<?php echo FRONT_ROOT ?>/Home/ShowSalesView">Ventas</a>
             </li>
 
 

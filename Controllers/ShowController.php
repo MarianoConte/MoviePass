@@ -128,8 +128,6 @@ class ShowController
     require_once(VIEWS_PATH . "/Show/tickets.php");
   }
 
-
-
   /* ACTION METHODS */
 
   public function Add()
