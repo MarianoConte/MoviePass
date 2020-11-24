@@ -5,15 +5,15 @@
                 <h1>Entradas vendidas</h1>
                 <hr>
                 <?php foreach ($responses as $response) { ?>
-                <?php if ($response->isSuccess()) { ?>
-                <div class="alert alert-success" role="alert">
-                    <?php echo $response->getMessage(); ?>
-                </div>
-                <?php } else { ?>
-                <div class="alert alert-danger" role="alert">
-                    <?php echo $response->getMessage(); ?>
-                </div>
-                <?php } ?>
+                  <?php if ($response->isSuccess()) { ?>
+                  <div class="alert alert-success" role="alert">
+                      <?php echo $response->getMessage(); ?>
+                  </div>
+                  <?php } else { ?>
+                  <div class="alert alert-danger" role="alert">
+                      <?php echo $response->getMessage(); ?>
+                  </div>
+                  <?php } ?>
                 <?php } ?>
                 <form action="<?php echo FRONT_ROOT . '/Show/GetTicketsSelled'; ?>" method="POST">
                     <div class="form-group">

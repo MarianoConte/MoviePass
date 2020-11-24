@@ -1,4 +1,3 @@
-
 <div class="container-fluid white-background section-container py-4">
   <div class="container">
     <div class="row">
@@ -6,22 +5,16 @@
         <h1>Ventas</h1>
         <hr>
         <?php
-if ($ticketsResult) {
-  $result = 0;
-  foreach ($ticketsResult as $ticket) {
-    $result += $ticket->getPrice();
-  }
-  echo '
-    <h3>
-      <span class="badge badge-info">
-        La recaudacion seleccionada es de: $' . $result.
-      '</span>
-    </h3>
-  <hr>
-';
-}
-
-?>
+          if ($ticketsResult) {
+            $result = 0;
+            foreach ($ticketsResult as $ticket) {
+              $result += $ticket->getPrice();
+            }
+        ?>
+          <div class="alert alert-info" role="alert">
+            La recaudacion con los filtros seleccionados es de: $<?php echo $result; ?>
+          </div>
+        <?php } ?>
 
         <form action="<?php echo FRONT_ROOT ?>/Home/SearchSales" method="POST" id="searchForm">
           <div class="form-group">

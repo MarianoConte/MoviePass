@@ -243,8 +243,8 @@ class ShowController
 
     $notSelledTickets = $this->showDAO->GetAvailableTickets($show->getId());
 
-    array_push($validationResponses, new Response(true, "Los tickets vendidos fueron: ".$selledTickets));
-    array_push($validationResponses, new Response(false, "Los tickets no vendidos fueron: ".$notSelledTickets));
+    array_push($validationResponses, new Response(true, "Tickets vendidos: ".$selledTickets));
+    array_push($validationResponses, new Response(false, "Tickets disponibles: ".$notSelledTickets));
 
     $this->ShowTicketsSelledView($validationResponses);
      

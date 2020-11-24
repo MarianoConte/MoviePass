@@ -1,16 +1,13 @@
 <div class="dark-background section-container">
-
   <div class="container-fluid index-listings py-3">
     <div class="container">
       <div class="row listings">
         <?php if (!empty($movies)) { ?>
           <?php foreach ($movies as $movie) { ?>
-
-
             <form action="<?php echo FRONT_ROOT ?>/Home/ShowMovieDetails" method="POST" id="form-movie-<?php echo $movie->getId() ?>">
               <input type="hidden" name="movie_id" value="<?php echo $movie->getId() ?>">
             </form>
-            <div class="container-fluid movie-details py-2" onclick="document.getElementById('form-movie-<?php echo $movie->getId() ?>').submit()" style="cursor: pointer">
+            <div class="container-fluid movie-details py-2 text-left" onclick="document.getElementById('form-movie-<?php echo $movie->getId() ?>').submit()" style="cursor: pointer">
               <div class="container table-btn py-3">
                 <div class="row">
                   <div class="col-md-3 movie-details-image">
@@ -33,10 +30,6 @@
                 </div>
               </div>
             </div>
-
-
-
-
           <?php } ?>
         <?php } else { ?>
           <div class="col-12">
