@@ -12,7 +12,7 @@
             }
         ?>
           <div class="alert alert-info text-center" role="alert">
-            La recaudacion con los filtros seleccionados es de: 
+            La recaudación con los filtros seleccionados es de: 
             <strong>$<?php echo $result; ?></strong>
           </div>
         <?php } ?>
