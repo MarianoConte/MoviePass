@@ -11,8 +11,9 @@
               $result += $ticket->getPrice();
             }
         ?>
-          <div class="alert alert-info" role="alert">
-            La recaudacion con los filtros seleccionados es de: $<?php echo $result; ?>
+          <div class="alert alert-info text-center" role="alert">
+            La recaudacion con los filtros seleccionados es de: 
+            <strong>$<?php echo $result; ?></strong>
           </div>
         <?php } ?>
 
