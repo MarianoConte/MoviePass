@@ -1,12 +1,3 @@
-<?php
-
-/* formulario de filtrado de ventas por:
-        -pelicula
-        -cine
-  */
-
-
-?>
 
 <div class="container-fluid white-background section-container py-4">
   <div class="container">
@@ -14,6 +5,23 @@
       <div class="col-lg-6 col-md-9 form-container mx-auto">
         <h1>Ventas</h1>
         <hr>
+        <?php
+if ($ticketsResult) {
+  $result = 0;
+  foreach ($ticketsResult as $ticket) {
+    $result += $ticket->getPrice();
+  }
+  echo '
+    <h3>
+      <span class="badge badge-info">
+        La recaudacion seleccionada es de: $' . $result.
+      '</span>
+    </h3>
+  <hr>
+';
+}
+
+?>
 
         <form action="<?php echo FRONT_ROOT ?>/Home/SearchSales" method="POST" id="searchForm">
           <div class="form-group">

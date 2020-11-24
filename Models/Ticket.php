@@ -9,19 +9,22 @@ class Ticket
   private $user;
   private $show;
   private $date;
+  private $price;
 
   public function __construct(
     $id = null,
     $token = null,
     $user = null,
     $show = null,
-    $date = null
+    $date = null,
+    $price = null
   ) {
     $this->id = $id;
     $this->token = $token;
     $this->user = $user;
     $this->show = $show;
     $this->date = $date;
+    $this->price = $price;
   }
 
   public function getId()
@@ -80,6 +83,18 @@ class Ticket
   public function setDate($date)
   {
     $this->date = $date;
+
+    return $this;
+  }
+
+  public function getPrice()
+  {
+    return $this->price;
+  }
+
+  public function setPrice($price)
+  {
+    $this->price = $price;
 
     return $this;
   }

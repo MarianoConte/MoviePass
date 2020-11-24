@@ -75,7 +75,7 @@ class HomeController
     }
   }
 
-  public function ShowSalesView()
+  public function ShowSalesView($ticketsResult = null)
   {
     $responses = [];
     if (!$_SESSION['user'] || $_SESSION['user']->getRole() != 'ADMIN')
@@ -91,7 +91,9 @@ class HomeController
 
   public function SearchSales()
   {
-    $tickets = $this->ticketDAO->GetByFilters($_POST['theater'], $_POST['movie'], $_POST['dateFrom'], $_POST['dateTo']);
+    $ticketsResult = $this->ticketDAO->GetByFilters($_POST['theater'], $_POST['movie'], $_POST['dateFrom'], $_POST['dateTo']);
+    
+    $this->ShowSalesView($ticketsResult);
   }
 
   public function BuyTickets()
@@ -106,7 +108,7 @@ class HomeController
       $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
 
       for ($i = 0; $i < $_POST['quantity'] && !$error; $i++) {
-        $newTicketId = $this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id']));
+        $newTicketId = $this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id'], null));
 
         if ($newTicketId) {
           $this->SendEmail($_SESSION['user']->getEmail(), md5($newTicketId), $show);
