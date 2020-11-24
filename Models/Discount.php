@@ -8,6 +8,7 @@
     private $dateFrom;
     private $dateTo;
     private $days;
+    private $minTickets;
     private $description;
     private $state;
 
@@ -19,6 +20,7 @@
         $dateFrom = null,
         $dateTo = null,
         $days = null,
+        $minTickets = null,
         $description = null,
         $state = null
       ) {
@@ -29,6 +31,7 @@
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
         $this->days = $days;
+        $this->minTickets = $minTickets;
         $this->description = $description;
         $this->state = $state;
       }
@@ -213,6 +216,26 @@
 
                 return $this;
         }
+
+    /**
+     * Get the value of minTickets
+     */ 
+    public function getMinTickets()
+    {
+        return $this->minTickets;
+    }
+
+    /**
+     * Set the value of minTickets
+     *
+     * @return  self
+     */ 
+    public function setMinTickets($minTickets)
+    {
+        $this->minTickets = $minTickets;
+
+        return $this;
+    }
   }
 
 ?>

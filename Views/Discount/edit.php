@@ -77,6 +77,11 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label for="minTickets">Cantidad de tickets</label>
+                        <input type="number" name="minTickets" value="<?php echo $discount->getMinTickets(); ?>" class="
+                            form-control" id="minTickets" placeholder="2" required>
+                    </div>
+                    <div class="form-group">
                         <label for="description">Descripcion</label>
                         <input type="textarea" name="description" value="<?php echo $discount->getDescription(); ?>"
                             class="form-control" id="description" placeholder="Descripcion...">

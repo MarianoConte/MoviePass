@@ -36,6 +36,7 @@ class DiscountDAO implements IDiscountDAO
             $dbDiscount['dateFrom'],
             $dbDiscount['dateTo'],
             $dbDiscount['days'],
+            $dbDiscount['minTickets'],
             $dbDiscount['description'],
             $dbDiscount['state']
           )
@@ -64,6 +65,7 @@ class DiscountDAO implements IDiscountDAO
         $dbDiscount['dateFrom'],
         $dbDiscount['dateTo'],
         $dbDiscount['days'],
+        $dbDiscount['minTickets'],
         $dbDiscount['description'],
         $dbDiscount['state']
       );
@@ -74,9 +76,9 @@ class DiscountDAO implements IDiscountDAO
 
   public function Add(Discount $discount)
   {
-    $sql = "INSERT INTO discounts(percentaje, amount, maximum, dateFrom, dateTo, days, description, state)
+    $sql = "INSERT INTO discounts(percentaje, amount, maximum, dateFrom, dateTo, days, minTickets, description, state)
       VALUES ('{$discount->getPercentaje()}','{$discount->getAmount()}','{$discount->getMaximum()}','{$discount->getDateFrom()}','{$discount->getDateTo()}',
-      '{$discount->getDays()}','{$discount->getDescription()}','{$discount->getState()}')";
+      '{$discount->getDays()}', '{$discount->getMinTickets()}' ,'{$discount->getDescription()}','{$discount->getState()}')";
 
     return $this->db->getConnection()->query($sql);
   }
@@ -93,6 +95,7 @@ class DiscountDAO implements IDiscountDAO
       dateFrom='{$discount->getDateFrom()}',
       dateTo='{$discount->getDateTo()}',
       days='{$discount->getDays()}',
+      minTickets='{$discount->getMinTickets()}',
       description='{$discount->getDescription()}',
       state='{$discount->getState()}',
     WHERE 
@@ -125,6 +128,38 @@ class DiscountDAO implements IDiscountDAO
 
     return $this->db->getConnection()->query($sql);
   }
+
+  public function GetTodayDiscounts(){
+    $discounts = array();
+  
+    $sql = "SELECT * FROM discounts WHERE NOW() BETWEEN discounts.dateFrom AND discounts.dateTo AND discounts.days LIKE CONCAT('%',DAYNAME(NOW()),'%')
+    AND discounts.state = 1 ";
+    $result = $this->db->getConnection()->query($sql);
+  
+    if ($result && $result->num_rows > 0) {
+      while ($dbDiscount = $result->fetch_assoc()) {
+        array_push(
+          $discounts,
+          new Discount(
+            $dbDiscount['id'],
+            $dbDiscount['percentaje'],
+            $dbDiscount['amount'],
+            $dbDiscount['maximum'],
+            $dbDiscount['dateFrom'],
+            $dbDiscount['dateTo'],
+            $dbDiscount['days'],
+            $dbDiscount['minTickets'],
+            $dbDiscount['description'],
+            $dbDiscount['state']
+          )
+        );
+      }
+    }
+  
+    return $discounts;
+  }
 }
+
+
 
 ?>

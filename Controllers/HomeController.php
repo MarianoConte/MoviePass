@@ -8,6 +8,7 @@ use DAO\ShowDAO as ShowDAO;
 use DAO\TheaterDAO as TheaterDAO;
 use DAO\RoomDAO as RoomDAO;
 use DAO\MovieDAO as MovieDAO;
+use DAO\DiscountDAO as DiscountDAO;
 
 use Models\Ticket as Ticket;
 
@@ -28,6 +29,7 @@ class HomeController
   private $theaterDAO;
   private $roomDAO;
   private $movieDAO;
+  private $discountDAO;
 
   public function __construct()
   {
@@ -36,6 +38,7 @@ class HomeController
     $this->theaterDAO = new TheaterDAO();
     $this->roomDAO = new RoomDAO();
     $this->movieDAO = new MovieDAO();
+    $this->discountDAO = new DiscountDAO();
   }
 
   /* VIEW METHODS */
@@ -61,6 +64,8 @@ class HomeController
     $show->setTheater($this->theaterDAO->GetById($show->getTheater()));
     $show->setRoom($this->roomDAO->GetById($show->getRoom()));
     $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
+
+    $discounts = $this->discountDAO->GetTodayDiscounts();
 
     require_once(VIEWS_PATH . "/Home/buy_tickets.php");
   }
@@ -100,15 +105,42 @@ class HomeController
   {
     $responses = [];
     $error = false;
-
     if (isset($_POST['show_id']) && isset($_POST['quantity']) && $_POST['quantity'] > 0) {
+      
       $show = $this->showDAO->GetById($_POST['show_id']);
       $show->setTheater($this->theaterDAO->GetById($show->getTheater()));
       $show->setRoom($this->roomDAO->GetById($show->getRoom()));
       $show->setMovie($this->movieDAO->getMovieOnLocalDBById($show->getMovie()));
+      $finalPrice = $show->getPrice();
+
+      if(isset($_POST['discount']) && $_POST['discount'] != '' ){
+        $discount = $this->discountDAO->GetById($_POST['discount']);
+
+        if($discount->getState() == 1 || $discount->getMinTickets()>$_POST['quantity']){
+          if($discount->getPercentaje()>0){
+            
+            $discountAmount = $show->getPrice() *  $_POST['quantity'] * ($discount->getPercentaje()/100);
+
+            if($discount->getMaximum() != 0 && $discountAmount > $discount->getMaximum()){
+              $finalDiscount =  $show->getPrice() * $_POST['quantity'] - $discount->getMaximum();
+            }
+            else{
+              $finalDiscount =  $show->getPrice() * $_POST['quantity'] - $discountAmount;
+            }
+          }
+          else{
+            $finalDiscount = $show->getPrice() * $_POST['quantity'] - $discount->getAmount();
+          }
+
+          $finalPrice = $finalDiscount/$_POST['quantity'];
+        }
+        else{
+          array_push($responses, new Response(false, "Descuento inválido."));
+        }
+      }
 
       for ($i = 0; $i < $_POST['quantity'] && !$error; $i++) {
-        $newTicketId = $this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id'], null));
+        $newTicketId = $this->ticketDAO->Add(new Ticket(null, null, $_SESSION['user']->getId(), $_POST['show_id'], null, $finalPrice, $_POST['discount']));
 
         if ($newTicketId) {
           $this->SendEmail($_SESSION['user']->getEmail(), md5($newTicketId), $show);

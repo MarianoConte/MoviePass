@@ -25,7 +25,7 @@ class TicketDAO implements ITicketDAO
   public function GetAll($from = null, $to = null)
   {
     $sql = "SELECT 
-    ticket.id as id, ticket.token as token, ticket.date as date,
+    ticket.id as id, ticket.token as token, ticket.date as date, ticket.price as price,
     f.id as function_id, f.price as function_price, f.date as function_date,
     t.name as theater_name, t.address as theater_address,
     r.name as theater_room_name, r.seats as theater_room_seats,
@@ -53,7 +53,7 @@ class TicketDAO implements ITicketDAO
   public function GetByUserId($userId)
   {
     $sql = "SELECT
-            ticket.id as id, ticket.token as token, ticket.date as date,
+            ticket.id as id, ticket.token as token, ticket.date as date, ticket.price as price,
             f.id as function_id, f.price as function_price, f.date as function_date,
             t.name as theater_name, t.address as theater_address,
             r.name as theater_room_name, r.seats as theater_room_seats,
@@ -73,7 +73,7 @@ class TicketDAO implements ITicketDAO
     $conditions = array();
     
     $sql = "SELECT
-            ticket.id as id, ticket.token as token, ticket.date as date,
+            ticket.id as id, ticket.token as token, ticket.date as date, ticket.price as price,
             f.id as function_id, f.price as function_price, f.date as function_date,
             t.name as theater_name, t.address as theater_address,
             r.name as theater_room_name, r.seats as theater_room_seats,
@@ -111,8 +111,8 @@ class TicketDAO implements ITicketDAO
 
   public function Add(Ticket $ticket)
   {
-    $sql = "INSERT INTO tickets(token, user_id, function_id)
-            SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}' FROM tickets;";
+    $sql = "INSERT INTO tickets(token, user_id, function_id, price, discount)
+            SELECT MD5(COALESCE(MAX(id), 0) + 1), '{$ticket->getUser()}', '{$ticket->getShow()}', '{$ticket->getPrice()}', '{$ticket->getDiscount()}' FROM tickets;";
 
     if($this->db->getConnection()->query($sql))
       return $this->db->getConnection()->insert_id;
@@ -150,7 +150,8 @@ class TicketDAO implements ITicketDAO
               $dbTicket['function_price'],
               $dbTicket['function_date']
             ),
-            $dbTicket['date']
+            $dbTicket['date'],
+            $dbTicket['price']
           )
         );
       }

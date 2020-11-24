@@ -19,6 +19,7 @@
                     <th>Desde</th>
                     <th>Hasta</th>
                     <th>Días de la semana</th>
+                    <th>Tickets</th>
                     <th>Estado</th>
                     <th class="text-right">Acciones</th>
                 </thead>
@@ -31,6 +32,7 @@
                         <td><?php echo $discount->getDateFrom(); ?></td>
                         <td><?php echo $discount->getDateTo(); ?></td>
                         <td><?php echo $discount->getDays(); ?></td>
+                        <td><?php echo $discount->getMinTickets(); ?></td>
                         <td><?php echo $discount->getState() ? "Habilitado" : "Deshabilitado"; ?></td>
                         <td class="text-right">
 

@@ -58,7 +58,7 @@ class DiscountController
     }
 
     $discount = new Discount(null, $_POST['percentaje'], $_POST['amount'], $_POST['maximum'], 
-    $_POST['dateFrom'], $_POST['dateTo'], $days, $_POST['description'], 1);
+    $_POST['dateFrom'], $_POST['dateTo'], $days, $_POST['minTickets'], $_POST['description'], 1);
 
     $responses = $this->validateDiscount($discount);
 
@@ -77,7 +77,7 @@ class DiscountController
     $responses = [];
 
     $discount = new Discount(null, $_POST['percentaje'], $_POST['amount'], $_POST['maximum'], 
-    $_POST['dateFrom'], $_POST['dateTo'], $_POST['days'], $_POST['description'], $_POST['state']);
+    $_POST['dateFrom'], $_POST['dateTo'], $_POST['days'], $_POST['minTickets'], $_POST['description'], $_POST['state']);
 
     $responses = $this->validateDiscount($discount);
 
@@ -126,7 +126,8 @@ class DiscountController
       array_push($validationResponses, new Response(false, "Fecha desde requerida."));
     if($discount->getDays() == NULL)
       array_push($validationResponses, new Response(false, "Dias de descuento requeridos."));
-
+    if($discount->getMinTickets() == NULL)
+    array_push($validationResponses, new Response(false, "Cantidad mínima de tickets requerida."));
     //Options validators
     if(!empty($discount->getPercentaje()) && !empty($discount->getAmount())){
         array_push($validationResponses, new Response(false, "No se puede ingresar un monto y un porcentaje a la vez."));

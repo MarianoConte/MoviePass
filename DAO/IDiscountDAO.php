@@ -12,6 +12,7 @@ interface IDiscountDAO
     function Edit(Discount $discount);
     function Desactivate($discount_id);
     function Activate($discount_id);
+    function GetTodayDiscounts();
 }
 
 ?>

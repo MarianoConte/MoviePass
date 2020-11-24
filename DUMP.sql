@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.3
+-- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Nov 20, 2020 at 06:40 PM
--- Server version: 10.4.14-MariaDB
--- PHP Version: 7.4.11
+-- Servidor: 127.0.0.1
+-- Tiempo de generación: 24-11-2020 a las 21:34:49
+-- Versión del servidor: 10.1.31-MariaDB
+-- Versión de PHP: 7.2.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,39 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `moviepass`
+-- Base de datos: `moviepass`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `functions`
+-- Estructura de tabla para la tabla `discounts`
+--
+
+CREATE TABLE `discounts` (
+  `id` int(11) NOT NULL,
+  `percentaje` int(11) DEFAULT NULL,
+  `maximum` float DEFAULT NULL,
+  `amount` float DEFAULT NULL,
+  `dateFrom` date NOT NULL,
+  `dateTo` date NOT NULL,
+  `days` varchar(300) NOT NULL,
+  `minTickets` int(11) NOT NULL,
+  `description` text,
+  `state` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `discounts`
+--
+
+INSERT INTO `discounts` (`id`, `percentaje`, `maximum`, `amount`, `dateFrom`, `dateTo`, `days`, `minTickets`, `description`, `state`) VALUES
+(10, 25, 2000, 0, '2020-11-01', '3000-12-31', 'Tuesday Wednesday ', 2, 'Descuento de los días martes y miércoles.', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `functions`
 --
 
 CREATE TABLE `functions` (
@@ -34,33 +60,35 @@ CREATE TABLE `functions` (
   `theater_room_id` int(11) NOT NULL,
   `price` float NOT NULL,
   `date` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `functions`
+-- Volcado de datos para la tabla `functions`
 --
 
 INSERT INTO `functions` (`id`, `movie_id`, `theater_id`, `theater_room_id`, `price`, `date`) VALUES
 (21, 4, 5, 8, 320, '2020-11-21 16:00:00'),
 (22, 5, 5, 9, 220, '2020-11-20 16:00:00'),
 (23, 6, 4, 7, 315, '2020-11-23 17:30:00'),
-(25, 6, 5, 8, 315, '2020-11-20 16:00:00');
+(25, 6, 5, 8, 315, '2020-11-20 16:00:00'),
+(26, 7, 4, 6, 300, '2020-12-13 20:00:00'),
+(27, 4, 5, 12, 350, '2020-12-30 13:00:00');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `genres`
+-- Estructura de tabla para la tabla `genres`
 --
 
 CREATE TABLE `genres` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `movies`
+-- Estructura de tabla para la tabla `movies`
 --
 
 CREATE TABLE `movies` (
@@ -71,10 +99,10 @@ CREATE TABLE `movies` (
   `genre` varchar(50) NOT NULL,
   `duration` varchar(5) NOT NULL,
   `image` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `movies`
+-- Volcado de datos para la tabla `movies`
 --
 
 INSERT INTO `movies` (`id`, `api_movie_id`, `name`, `description`, `genre`, `duration`, `image`) VALUES
@@ -87,7 +115,7 @@ INSERT INTO `movies` (`id`, `api_movie_id`, `name`, `description`, `genre`, `dur
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theaters`
+-- Estructura de tabla para la tabla `theaters`
 --
 
 CREATE TABLE `theaters` (
@@ -95,11 +123,11 @@ CREATE TABLE `theaters` (
   `name` varchar(100) NOT NULL,
   `address` varchar(150) NOT NULL,
   `ticket_price` decimal(10,2) NOT NULL,
-  `state` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `state` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `theaters`
+-- Volcado de datos para la tabla `theaters`
 --
 
 INSERT INTO `theaters` (`id`, `name`, `address`, `ticket_price`, `state`) VALUES
@@ -109,7 +137,7 @@ INSERT INTO `theaters` (`id`, `name`, `address`, `ticket_price`, `state`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `theater_rooms`
+-- Estructura de tabla para la tabla `theater_rooms`
 --
 
 CREATE TABLE `theater_rooms` (
@@ -117,11 +145,11 @@ CREATE TABLE `theater_rooms` (
   `theater_id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `seats` int(5) NOT NULL,
-  `state` tinyint(1) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `state` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `theater_rooms`
+-- Volcado de datos para la tabla `theater_rooms`
 --
 
 INSERT INTO `theater_rooms` (`id`, `theater_id`, `name`, `seats`, `state`) VALUES
@@ -136,7 +164,7 @@ INSERT INTO `theater_rooms` (`id`, `theater_id`, `name`, `seats`, `state`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tickets`
+-- Estructura de tabla para la tabla `tickets`
 --
 
 CREATE TABLE `tickets` (
@@ -144,23 +172,23 @@ CREATE TABLE `tickets` (
   `token` varchar(255) NOT NULL DEFAULT 'MD5(id)',
   `user_id` int(11) NOT NULL,
   `function_id` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `price` float NOT NULL,
+  `discount` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `tickets`
+-- Volcado de datos para la tabla `tickets`
 --
 
-INSERT INTO `tickets` (`id`, `token`, `user_id`, `function_id`, `date`) VALUES
-(60, 'c4ca4238a0b923820dcc509a6f75849b', 7, 25, '2020-11-19 00:37:38'),
-(61, '7f39f8317fbdb1988ef4c628eba02591', 7, 25, '2020-11-19 00:38:04'),
-(62, '44f683a84163b3523afe57c2e008bc8c', 7, 25, '2020-11-19 00:38:04'),
-(63, '03afdbd66e7929b125f8597834fa83a4', 7, 25, '2020-11-19 00:38:04');
+INSERT INTO `tickets` (`id`, `token`, `user_id`, `function_id`, `date`, `price`, `discount`) VALUES
+(5, 'c4ca4238a0b923820dcc509a6f75849b', 8, 27, '2020-11-24 17:26:01', 262.5, 10),
+(6, '1679091c5a880faf6fb5e6087eb1b2dc', 8, 27, '2020-11-24 17:26:03', 262.5, 10);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `users`
+-- Estructura de tabla para la tabla `users`
 --
 
 CREATE TABLE `users` (
@@ -170,23 +198,30 @@ CREATE TABLE `users` (
   `first_name` varchar(100) NOT NULL,
   `last_name` varchar(100) NOT NULL,
   `role` enum('ADMIN','CUSTOMER') NOT NULL,
-  `created` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `created` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
--- Dumping data for table `users`
+-- Volcado de datos para la tabla `users`
 --
 
 INSERT INTO `users` (`id`, `email`, `password`, `first_name`, `last_name`, `role`, `created`) VALUES
 (6, 'sz.andres150@gmail.com', '6367c48dd193d56ea7b0baad25b19455e529f5ee', 'Andres', 'Sanchez', 'ADMIN', '2020-11-09 22:56:47'),
-(7, 'sanchez.andres1500@gmail.com', '6367c48dd193d56ea7b0baad25b19455e529f5ee', 'Andres', 'Sanchez', 'CUSTOMER', '2020-11-18 23:10:09');
+(7, 'sanchez.andres1500@gmail.com', '6367c48dd193d56ea7b0baad25b19455e529f5ee', 'Andres', 'Sanchez', 'CUSTOMER', '2020-11-18 23:10:09'),
+(8, 'marianitoconte@yahoo.com.ar', 'c212f120e611b35e73710e0350efd617982c5f07', 'Mariano', 'Conte', 'CUSTOMER', '2020-11-23 22:09:25');
 
 --
--- Indexes for dumped tables
+-- Índices para tablas volcadas
 --
 
 --
--- Indexes for table `functions`
+-- Indices de la tabla `discounts`
+--
+ALTER TABLE `discounts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `functions`
 --
 ALTER TABLE `functions`
   ADD PRIMARY KEY (`id`),
@@ -195,100 +230,107 @@ ALTER TABLE `functions`
   ADD KEY `theater_id` (`theater_id`) USING BTREE;
 
 --
--- Indexes for table `genres`
+-- Indices de la tabla `genres`
 --
 ALTER TABLE `genres`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `movies`
+-- Indices de la tabla `movies`
 --
 ALTER TABLE `movies`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `api_movie_id` (`api_movie_id`);
 
 --
--- Indexes for table `theaters`
+-- Indices de la tabla `theaters`
 --
 ALTER TABLE `theaters`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `name` (`name`);
 
 --
--- Indexes for table `theater_rooms`
+-- Indices de la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   ADD PRIMARY KEY (`id`),
   ADD KEY `theater_id` (`theater_id`);
 
 --
--- Indexes for table `tickets`
+-- Indices de la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `token` (`token`),
   ADD KEY `user_id` (`user_id`),
-  ADD KEY `function_id` (`function_id`);
+  ADD KEY `function_id` (`function_id`),
+  ADD KEY `discount` (`discount`);
 
 --
--- Indexes for table `users`
+-- Indices de la tabla `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT de las tablas volcadas
 --
 
 --
--- AUTO_INCREMENT for table `functions`
+-- AUTO_INCREMENT de la tabla `discounts`
+--
+ALTER TABLE `discounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT de la tabla `functions`
 --
 ALTER TABLE `functions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
--- AUTO_INCREMENT for table `genres`
+-- AUTO_INCREMENT de la tabla `genres`
 --
 ALTER TABLE `genres`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `movies`
+-- AUTO_INCREMENT de la tabla `movies`
 --
 ALTER TABLE `movies`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `theaters`
+-- AUTO_INCREMENT de la tabla `theaters`
 --
 ALTER TABLE `theaters`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `theater_rooms`
+-- AUTO_INCREMENT de la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `tickets`
+-- AUTO_INCREMENT de la tabla `tickets`
 --
 ALTER TABLE `tickets`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Constraints for dumped tables
+-- Restricciones para tablas volcadas
 --
 
 --
--- Constraints for table `functions`
+-- Filtros para la tabla `functions`
 --
 ALTER TABLE `functions`
   ADD CONSTRAINT `functions_ibfk_1` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`),
@@ -296,17 +338,18 @@ ALTER TABLE `functions`
   ADD CONSTRAINT `functions_ibfk_3` FOREIGN KEY (`theater_id`) REFERENCES `theaters` (`id`);
 
 --
--- Constraints for table `theater_rooms`
+-- Filtros para la tabla `theater_rooms`
 --
 ALTER TABLE `theater_rooms`
   ADD CONSTRAINT `theater_rooms_ibfk_1` FOREIGN KEY (`theater_id`) REFERENCES `theaters` (`id`);
 
 --
--- Constraints for table `tickets`
+-- Filtros para la tabla `tickets`
 --
 ALTER TABLE `tickets`
   ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`function_id`) REFERENCES `functions` (`id`);
+  ADD CONSTRAINT `tickets_ibfk_2` FOREIGN KEY (`function_id`) REFERENCES `functions` (`id`),
+  ADD CONSTRAINT `tickets_ibfk_3` FOREIGN KEY (`discount`) REFERENCES `discounts` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
