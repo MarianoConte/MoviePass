@@ -68,57 +68,44 @@ class TicketDAO implements ITicketDAO
     return $this->GetByQuery($sql);
   }
 
-  public function GetByTheater($theater, $from = null, $to = null)
+  public function GetByFilters($theaterId, $movieId, $dateFrom, $dateTo)
   {
-    $sql = 'SELECT
-    ticket.id as id, ticket.token as token, ticket.date as date,
-    f.id as function_id, f.price as function_price, f.date as function_date,
-    t.name as theater_name, t.address as theater_address,
-    r.name as theater_room_name, r.seats as theater_room_seats,
-    m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
-    FROM tickets ticket
-    INNER JOIN functions f on ticket.function_id = f.id
-    INNER JOIN theaters t on f.theater_id = t.id
-    INNER JOIN theater_rooms r on f.theater_room_id = r.id
-    INNER JOIN movies m on f.movie_id = m.id
-    WHERE t.id = $theater';
-    if (!$from) {
-      if ($to) { //hasta
+    $conditions = array();
+    
+    $sql = "SELECT
+            ticket.id as id, ticket.token as token, ticket.date as date,
+            f.id as function_id, f.price as function_price, f.date as function_date,
+            t.name as theater_name, t.address as theater_address,
+            r.name as theater_room_name, r.seats as theater_room_seats,
+            m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
+            FROM tickets ticket
+            INNER JOIN functions f on ticket.function_id = f.id
+            INNER JOIN theaters t on f.theater_id = t.id
+            INNER JOIN theater_rooms r on f.theater_room_id = r.id
+            INNER JOIN movies m on f.movie_id = m.id ";
+    
+    if(!is_null($theaterId) || !is_null($movieId) || !is_null($dateFrom) || !is_null($dateTo)) {
+      if($theaterId)
+        array_push($conditions, "t.id = $theaterId");
+      if($movieId)
+        array_push($conditions, "m.id = $movieId");
+      if($dateFrom)
+        array_push($conditions, "ticket.date >= DATE('$dateFrom')");
+      if($dateTo)
+        array_push($conditions, "ticket.date <= DATE_ADD('$dateTo', INTERVAL 1 DAY)");
 
+      if(!empty($conditions)) {
+        foreach($conditions as $key => $condition) {
+          if($key == 0)
+            $sql.="WHERE $condition ";
+          else
+            $sql.="AND $condition ";
+        }
       }
-    } else if (!$to) { // desde
-
-    } else { //desde y hasta
     }
+      
+    $sql.="ORDER BY ticket.id DESC";
 
-    $sql.=" ORDER BY ticket.id DESC";
-    return $this->GetByQuery($sql);
-  }
-
-  public function GetByMovie($movie, $from = null, $to = null)
-  {
-    $sql = 'SELECT
-    ticket.id as id, ticket.token as token, ticket.date as date,
-    f.id as function_id, f.price as function_price, f.date as function_date,
-    t.name as theater_name, t.address as theater_address,
-    r.name as theater_room_name, r.seats as theater_room_seats,
-    m.name as movie_name, m.description as movie_description, m.genre as movie_genre, m.duration as movie_duration, m.image as movie_image
-    FROM tickets ticket
-    INNER JOIN functions f on ticket.function_id = f.id
-    INNER JOIN theaters t on f.theater_id = t.id
-    INNER JOIN theater_rooms r on f.theater_room_id = r.id
-    INNER JOIN movies m on f.movie_id = m.id
-    WHERE m.id = $movie';
-    if (!$from) {
-      if ($to) { //hasta
-
-      }
-    } else if (!$to) { // desde
-
-    } else { //desde y hasta
-    }
-
-    $sql.=" ORDER BY ticket.id DESC";
     return $this->GetByQuery($sql);
   }
 

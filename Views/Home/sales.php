@@ -35,12 +35,12 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="dateFrom">Año desde</label>
-            <input type="number" name="dateFrom" class="form-control" id="dateFrom" placeholder="1900" max="9999" min="1900">
+            <label for="dateFrom">Fecha desde</label>
+            <input type="date" name="dateFrom" class="form-control" id="dateFrom">
           </div>
           <div class="form-group">
-            <label for="dateTo">Año hasta</label>
-            <input type="number" name="dateTo" class="form-control" id="dateTo" placeholder="2020" max="9999" min="1900">
+            <label for="dateTo">Fecha hasta</label>
+            <input type="date" name="dateTo" class="form-control" id="dateTo">
           </div>
           <button type="submit" id="submitButton" class="btn btn-dark w-100 mt-2">Buscar</button>
         </form>

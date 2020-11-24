@@ -91,25 +91,9 @@ class HomeController
 
   public function SearchSales()
   {
-    $movie = ($_POST['movie']) ? $_POST['movie'] : '';
-    $theater = ($_POST['theater']) ? $_POST['theater'] : '';
-    $desde = ($_POST['dateFrom']) ? $_POST['dateFrom'] : null;
-    $hasta = ($_POST['dateTo']) ? $_POST['dateTo'] : null;
-
-    $tickets = array();
-
-    if ($movie != '') {
-      if ($theater != '') {
-        $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
-      } else {
-        $tickets = $this->ticketDAO->GetByMovie($movie, $desde, $hasta);
-      }
-    } else if ($theater != '') {
-      $tickets = $this->ticketDAO->GetByTheater($theater, $desde, $hasta);
-    } else {
-      $tickets = $this->ticketDAO->GetAll($desde, $hasta);
-    }
+    $tickets = $this->ticketDAO->GetByFilters($_POST['theater'], $_POST['movie'], $_POST['dateFrom'], $_POST['dateTo']);
   }
+
   public function BuyTickets()
   {
     $responses = [];
